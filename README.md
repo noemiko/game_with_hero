@@ -1,4 +1,4 @@
-## What is it?
+## What is this?
 This is simple project to learn how to use own drawing in PyGame.
 Hero was drawn in Krita by graphic tablet.
 Below is gif represent this project.
