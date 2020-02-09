@@ -17,7 +17,7 @@ main = True
 world = pygame.display.set_mode([worldx, worldy])
 backdrop = pygame.image.load(os.path.join("images", "bg.png"))
 backdropbox = world.get_rect()
-player = Player(0, 150)  # spawn player
+player = Player(0, 320)  # spawn player
 
 player_list = pygame.sprite.Group()
 player_list.add(player)

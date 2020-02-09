@@ -22,9 +22,10 @@ class Player(pygame.sprite.Sprite):
 
     def get_walk_images(self, mirrored=False):
         images = []
-        for i in range(1, 5):
-            img = pygame.image.load(os.path.join("images", "hero" + str(i) + "_kol_filled.png"))
-            img = pygame.transform.scale(img, (200, 300))
+        for i in range(0, 9):
+            # img = pygame.image.load(os.path.join('images', 'hero' + str(i) + '_kol_filled.png'))
+            img = pygame.image.load(os.path.join('images', 'jamnik_przezroczysty000' + str(i) + '.png'))
+            img = pygame.transform.scale(img, (200, 100), )
             img.convert_alpha()
             if mirrored:
                 img = pygame.transform.flip(img, True, False)
@@ -49,13 +50,13 @@ class Player(pygame.sprite.Sprite):
         # moving left
         if self.movex < 0:
             self.frame += 1
-            if self.frame > 3 * animation_cycles:
+            if self.frame > 8 * animation_cycles:
                 self.frame = 1
             self.image = self.images_walk_left[self.frame // animation_cycles]
 
         # moving right
         if self.movex > 0:
             self.frame += 1
-            if self.frame > 3 * animation_cycles:
+            if self.frame > 8 * animation_cycles:
                 self.frame = 1
             self.image = self.images_walk_right[(self.frame // animation_cycles)]

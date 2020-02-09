@@ -15,4 +15,10 @@ pip3 install -r requirements.txt
 
 ```
 
+on windows
+
+```
+.\venv\Scripts\activate
+
+
 
