@@ -22,7 +22,7 @@ class Game:
         self.world = pygame.display.set_mode([worldx, worldy])
         self.background = pygame.image.load(os.path.join("images", "bg.png"))
         self.backdropbox = self.world.get_rect()
-        self.player = Player(0, 150)  # spawn player
+        self.player = Player(0, 320)  # spawn player
 
         self.player_list = pygame.sprite.Group()
         self.player_list.add(self.player)
@@ -36,24 +36,22 @@ class Game:
 
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_LEFT or event.key == ord("a"):
-                        self.player.control(-walk_speed, -1)
+                        self.player.control(-walk_speed, 0)
                     if event.key == pygame.K_RIGHT or event.key == ord("d"):
-                        self.player.control(walk_speed, -1)
+                        self.player.control(walk_speed, 0)
                     if event.key == pygame.K_UP or event.key == ord("w"):
                         print("jump")
 
                 if event.type == pygame.KEYUP:
                     if event.key == pygame.K_LEFT or event.key == ord("a"):
-                        self.player.control(walk_speed, -1)
+                        self.player.control(walk_speed, 0)
                     if event.key == pygame.K_RIGHT or event.key == ord("d"):
-                        self.player.control(-walk_speed, -1)
+                        self.player.control(-walk_speed, 0)
                     if event.key == ord("q") or event.key == pygame.K_ESCAPE:
                         pygame.quit()
                         print("Quit")
                         sys.exit()
                 self.draw_world()
-
-    def handle_controlls(self):
 
     def draw_world(self):
         self.world.fill(WHITE)
