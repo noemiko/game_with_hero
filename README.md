@@ -7,6 +7,8 @@ Below is gif represent this project.
 
 ![](screencast/walking.gif)
 
+![](screencast/dog_with_enemy.gif)
+
 ## How to run
 
 ```
