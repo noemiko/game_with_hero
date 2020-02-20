@@ -52,10 +52,33 @@ class Player(pygame.sprite.Sprite):
         self.movex += x
         self.movey += y
 
+    def onTheGround(self):
+        if self.rect.y >= 300:
+            return True
+        return False
+
+
+    def onTheTop(self):
+        if self.rect.y <= 250:
+            return True
+        return False
+    def jump(self):
+        if self.onTheGround():
+            self.movey -= 30
+            self.is_jumping = True
+
     def update(self, enemy_list):
         """
         Update sprite position
         """
+
+        if self.onTheTop():
+            self.movey += 50
+            self.is_jumping = False
+
+        if self.onTheGround() and not self.is_jumping:
+            self.movey = 0
+            self.rect.y = 350
 
         self.rect.x = self.rect.x + self.movex
         self.rect.y = self.rect.y + self.movey

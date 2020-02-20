@@ -4,7 +4,7 @@ import sys
 
 from player import Player
 from enemy import Enemy
-from  level import Level
+from level import Level
 from settings import worldx, worldy
 from settings import WHITE
 from settings import fps
@@ -13,6 +13,9 @@ from settings import walk_speed
 """
 Main loop
 """
+
+
+# Force (v) up and mass m.
 
 
 class Game:
@@ -30,9 +33,10 @@ class Game:
         self.player_list.add(self.player)
 
         eloc = []
-        eloc = [50,250]
+        eloc = [50, 250]
         self.enemy_list = Level.bad(1, eloc)
-
+        self.v = 5
+        self.m = 1
         gloc = []
         tx = 64
         ty = 64
@@ -44,7 +48,6 @@ class Game:
 
         self.ground_list = Level.ground(1, gloc, tx, ty)
         self.plat_list = Level.platform(1)
-
 
         # enemy = Enemy(320, 200)  # spawn enemy
         # self.enemy_list = pygame.sprite.Group()  # create enemy group
@@ -63,7 +66,7 @@ class Game:
                     if event.key == pygame.K_RIGHT or event.key == ord("d"):
                         self.player.control(walk_speed, 0)
                     if event.key == pygame.K_SPACE or event.key == ord("w"):
-                        self.player.is_jumping = True
+                        self.player.jump()
 
                 if event.type == pygame.KEYUP:
                     if event.key == pygame.K_LEFT or event.key == ord("a"):
@@ -74,16 +77,7 @@ class Game:
                         pygame.quit()
                         print("Quit")
                         sys.exit()
-                if self.player.is_jumping:
-                    if self.player.jump_frames >= -10:
-                        neg = 1
-                        if self.player.jump_frames < 0:
-                            neg = -1
-                        self.player.movey -= self.player.jump_frames ** 2 * 0.1 * neg
-                        self.player.jump_frames -= 1
-                    else:
-                        self.player.is_jumping = False
-                        self.player.jump_frames= 10
+
                 self.draw_world()
 
     def draw_world(self):
@@ -91,7 +85,6 @@ class Game:
         self.world.blit(self.background, self.backdropbox)
         # self.player.gravity()  # check gravity
         self.player.update(self.enemy_list)
-
 
         self.enemy_list.draw(self.world)
         self.player_list.draw(self.world)  # refresh player position
