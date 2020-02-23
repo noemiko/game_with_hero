@@ -62,6 +62,7 @@ class Player(pygame.sprite.Sprite):
         if self.rect.y <= 250:
             return True
         return False
+    
     def jump(self):
         if self.onTheGround():
             self.movey -= 30
