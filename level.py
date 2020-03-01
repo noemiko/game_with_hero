@@ -7,13 +7,14 @@ from settings import worldy, worldx
 class Level():
     def bad(lvl,eloc):
         if lvl == 1:
-            enemy = Enemy(eloc[0],eloc[1]) # spawn enemy
-            enemy_list = pygame.sprite.Group() # create enemy group
-            enemy_list.add(enemy)              # add enemy to group
+            pass
+            # enemy = Enemy(eloc[0],eloc[1]) # spawn enemy
+            # enemy_list = pygame.sprite.Group() # create enemy group
+            # enemy_list.add(enemy)              # add enemy to group
         if lvl == 2:
             print("Level " + str(lvl) )
 
-        return enemy_list
+        return "enemy_list"
 
     def ground(lvl, gloc, tx, ty):
         ground_list = pygame.sprite.Group()

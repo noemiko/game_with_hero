@@ -20,7 +20,9 @@ class Enemy(pygame.sprite.Sprite):
         self.frame = 0
         self.rect.x = x
         self.rect.y = y
+        self.movey = 0
         self.counter = 0 # counter variable
+        self.is_jumping = False
 
     def get_walk_images(self, mirrored=False):
         images = []
@@ -33,27 +35,60 @@ class Enemy(pygame.sprite.Sprite):
             images.append(img)
         return images
 
-    def move(self):
+    def jump(self):
+        if self.onTheGround():
+            self.movey -= 130
+            self.is_jumping = True
+
+
+    def onTheGround(self):
+        if self.rect.y >= 250:
+            return True
+        return False
+
+    def onTheTop(self):
+        if self.rect.y <= 150:
+            return True
+        return False
+
+    def jump(self):
+        if self.onTheGround():
+            self.movey -= 30
+            self.is_jumping = True
+
+
+    def update(self):
         '''
         enemy movement
         '''
-        speed = 8
+        self.rect.y = self.rect.y + self.movey
+        if self.onTheTop():
+            self.movey += 50
+            self.is_jumping = False
+
+        if self.onTheGround() and not self.is_jumping:
+            self.movey = 0
+            self.rect.y = 250
 
         if self.frame == 4:
-            self.frame = 1
-
-
-        if self.counter >= 0 and self.counter <= 80:
-            self.rect.x += speed
-            self.image = self.images[self.frame // animation_cycles]
-
-        elif self.counter >= 80 and self.counter <= 80*2:
-            self.rect.x -= speed
-            self.image = self.images_left[self.frame // animation_cycles]
-        else:
-            self.counter = 0
-
-
+            self.frame = 0
 
         self.frame += 1
-        self.counter += 1
+        # if self.frame > 4 * animation_cycles:
+        #     self.frame = 1
+        self.image = self.images[(self.frame // animation_cycles)-1]
+
+        # if self.counter >= 0 and self.counter <= 80:
+        #     self.rect.x += speed
+        #     self.image = self.images[self.frame // animation_cycles]
+        #
+        # elif self.counter >= 80 and self.counter <= 80*2:
+        #     self.rect.x -= speed
+        #     self.image = self.images_left[self.frame // animation_cycles]
+        # else:
+        #     self.counter = 0
+
+
+
+        # self.frame += 1
+        # self.counter += 1

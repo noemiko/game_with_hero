@@ -29,13 +29,14 @@ class Game:
         self.background = Background()
         self.backdropbox = self._display_surface.get_rect()
         self.player = Player(0, 350)  # spawn player
-
+        self.enemy = Enemy(150, 250)
         self.player_list = pygame.sprite.Group()
         self.player_list.add(self.player)
+        self.player_list.add(self.enemy)
 
         eloc = []
         eloc = [50, 250]
-        self.enemy_list = Level.bad(1, eloc)
+        # self.enemy_list = Level.bad(1, eloc)
         self.v = 5
         self.m = 1
         gloc = []
@@ -63,9 +64,10 @@ class Game:
                     #     self.player.control(-walk_speed, 0)
                     # if event.key == pygame.K_RIGHT or event.key == ord("d"):
                     #     self.player.control(walk_speed, 0)
-                    if event.key == pygame.K_SPACE or event.key == ord("w"):
+                    if event.key == pygame.K_SPACE:
                         self.player.jump()
-
+                    if event.key == event.key == ord("w"):
+                        self.enemy.jump()
                 if event.type == pygame.KEYUP:
                     # if event.key == pygame.K_LEFT or event.key == ord("a"):
                     #     self.player.control(walk_speed, 0)
@@ -87,14 +89,15 @@ class Game:
         self._display_surface.blit(self.background.backgroundImg[self.background.random1],(self.background.x,self.background.y))
         self._display_surface.blit(self.background.backgroundImg[self.background.random2],(self.background.x2,self.background.y))
 
-        self.player.update(self.enemy_list)
+        self.player.update()
+        self.enemy.update()
         self.background.update()
-        self.enemy_list.draw(self._display_surface)
+        # self.enemy_list.draw(self._display_surface)
         self.player_list.draw(self._display_surface)  # refresh player position
         self.ground_list.draw(self._display_surface)  # refresh ground
         self.plat_list.draw(self._display_surface)  # refresh platforms
-        for e in self.enemy_list:
-            e.move()
+        # for e in self.enemy_list:
+        #     e.move()
         pygame.display.flip()
 
         self.clock.tick(fps)

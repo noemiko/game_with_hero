@@ -4,6 +4,7 @@ from settings import animation_cycles
 from settings import worldx, worldy
 from settings import ty, tx
 
+
 class Player(pygame.sprite.Sprite):
     """
     Spawn a player
@@ -23,14 +24,6 @@ class Player(pygame.sprite.Sprite):
         self.is_jumping = False
         self.jump_frames = 10
         self.health = 0
-
-    def gravity(self):
-
-        self.movey += 3.2  # how fast player falls
-
-        if self.rect.y > worldy and self.movey >= 0:
-            self.movey = 0
-            self.rect.y = worldy - ty - ty
 
 
     def get_walk_images(self, mirrored=False):
@@ -57,18 +50,17 @@ class Player(pygame.sprite.Sprite):
             return True
         return False
 
-
     def onTheTop(self):
         if self.rect.y <= 250:
             return True
         return False
-    
+
     def jump(self):
         if self.onTheGround():
             self.movey -= 30
             self.is_jumping = True
 
-    def update(self, enemy_list):
+    def update(self, ):
         """
         Update sprite position
         """
@@ -81,24 +73,24 @@ class Player(pygame.sprite.Sprite):
             self.movey = 0
             self.rect.y = 350
 
-        self.rect.x = self.rect.x + self.movex
+        # self.rect.x = self.rect.x + self.movex
         self.rect.y = self.rect.y + self.movey
 
-        # moving left
-        if self.movex < 0:
-            self.frame += 1
-            if self.frame > 8 * animation_cycles:
-                self.frame = 1
-            self.image = self.images_walk_left[self.frame // animation_cycles]
+        # # moving left
+        # if self.movex < 0:
+        #     self.frame += 1
+        #     if self.frame > 8 * animation_cycles:
+        #         self.frame = 1
+        #     self.image = self.images_walk_left[self.frame // animation_cycles]
 
         # moving right
-        if self.movex > 0:
-            self.frame += 1
-            if self.frame > 8 * animation_cycles:
-                self.frame = 1
-            self.image = self.images_walk_right[(self.frame // animation_cycles)]
+        # if self.movex > 0:
+        self.frame += 1
+        if self.frame > 8 * animation_cycles:
+            self.frame = 0
+        self.image = self.images_walk_right[(self.frame // animation_cycles)]
 
-        hit_list = pygame.sprite.spritecollide(self, enemy_list, False)
-        for enemy in hit_list:
-            self.health -= 1
-            print(self.health)
+        # hit_list = pygame.sprite.spritecollide(self, enemy_list, False)
+        # for enemy in hit_list:
+        #     self.health -= 1
+        #     print(self.health)
