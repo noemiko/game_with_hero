@@ -14,7 +14,7 @@ class Background():
         self.x = 0
         self.x2 = self.width
         self.y = 0
-        self.dx = -10
+        self.dx = -15
         self.random1 = 0
         self.random2 = 1
 

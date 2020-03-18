@@ -1,27 +1,29 @@
 import pygame
 import os
 import sys
+from random import randint
 
 from player import Player
 from background import Background
 from enemy import Enemy
 from level import Level
+from obstacles import Cactus
 from settings import worldx, worldy
 from settings import WHITE
 from settings import fps
 from settings import walk_speed
-
+from settings import ground_position_y
+from counter import Counter
 """
 Main loop
 """
 
 
-# Force (v) up and mass m.
-
-
 class Game:
     def __init__(self):
-        self.clock = pygame.time.Clock()
+        self.flpsClock = pygame.time.Clock()
+        self._display_surface = pygame.display.set_mode((800, 500))
+        pygame.display.set_caption("Run")
         pygame.init()
 
     def setup(self):
@@ -33,6 +35,9 @@ class Game:
         self.player_list = pygame.sprite.Group()
         self.player_list.add(self.player)
         self.player_list.add(self.enemy)
+        self.counter = Counter()
+        self.cactuses = pygame.sprite.Group()
+        self.respawn = 5
 
         eloc = []
         eloc = [50, 250]
@@ -53,6 +58,7 @@ class Game:
 
 
     def run(self):
+        deltatime = 0
         while True:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -78,18 +84,16 @@ class Game:
                         print("Quit")
                         sys.exit()
 
+            deltatime = self.flpsClock.tick(fps) / 300.0
+            self.draw_world(deltatime)
 
-            self.draw_world()
-
-    def draw_world(self):
-        # self._display_surface.fill(WHITE)
-        # self.world.blit(self.background, self.backdropbox)
-        # self.player.gravity()  # check gravity
-
+    def draw_world(self, deltatime):
         self._display_surface.blit(self.background.backgroundImg[self.background.random1],(self.background.x,self.background.y))
         self._display_surface.blit(self.background.backgroundImg[self.background.random2],(self.background.x2,self.background.y))
+        self._display_surface.blit(self.counter.counterText, (730, 10))
+        self.counter.update()
 
-        self.player.update()
+        self.player.update(deltatime)
         self.enemy.update()
         self.background.update()
         # self.enemy_list.draw(self._display_surface)
@@ -98,9 +102,24 @@ class Game:
         self.plat_list.draw(self._display_surface)  # refresh platforms
         # for e in self.enemy_list:
         #     e.move()
+
+
+        self.respawn -= 1
+        if self.respawn == 0:
+            self.cactuses.add(Cactus())
+            self.respawn = randint(60, 70)
+
+        for cactus in self.cactuses:
+            is_collided = pygame.sprite.collide_rect_ratio(0.7)(self.player, cactus)
+            if (is_collided):
+                print("KOLIZJA!!!")
+                # self._running = False
+
+        self.cactuses.update()
+        self.cactuses.draw(self._display_surface)
+        pygame.display.update()
         pygame.display.flip()
 
-        self.clock.tick(fps)
 
 
 if __name__ == "__main__":
