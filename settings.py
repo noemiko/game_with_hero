@@ -2,7 +2,6 @@ worldx = 850
 worldy = 480
 
 fps = 20  # frame rate
-animation_cycles = 1  # animation cycles
 
 walk_speed = 30  # how fast to move
 

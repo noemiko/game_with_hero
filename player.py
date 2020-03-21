@@ -1,100 +1,124 @@
 import pygame
-import os
-from settings import animation_cycles
-from settings import worldx, worldy
-from settings import ty, tx
 from settings import ground_position_y
+from utils import get_scaled_images
 
-class Player(pygame.sprite.Sprite):
-    """
-    Spawn a player
-    """
+
+class Duchshund(pygame.sprite.Sprite):
 
     def __init__(self, x, y):
         pygame.sprite.Sprite.__init__(self)
-        # self.movex = 0  # dx speed in x axis
         self.movey = 0  # dy speed on y axis
         self.frame = 0
-        self.images_walk_right = self.get_walk_images()
-        # self.images_walk_left = self.get_walk_images(True)
-        self.image = self.images_walk_right[0]
+        self.images_frames = get_scaled_images("duchshund", (100, 50))
+        self.image = self.images_frames[0]
         self.rect = self.image.get_rect()
         self.rect.x = x  # player x position
-        self.rect.y = y  # player x positiony
+        self.rect.y = y  # player y positiony
         self.is_jumping = False
         self.health = 0
-        # self.collide_rect_ratio(0.7)
 
-    def get_walk_images(self, mirrored=False):
-        images = []
-        for i in range(0, 9):
-            # img = pygame.image.load(os.path.join('images', 'hero' + str(i) + '_kol_filled.png'))
-            img = pygame.image.load(os.path.join('images', 'jamnik_przezroczysty000' + str(i) + '.png'))
-            img = pygame.transform.scale(img, (100, 50), )
-            img.convert_alpha()
-            if mirrored:
-                img = pygame.transform.flip(img, True, False)
-            images.append(img)
-        return images
-
-    def control(self, x, y):
-        """
-        control player movement
-        """
-        self.movex += x
-        self.movey += y
-
-    def onTheGround(self):
+    def is_on_the_ground(self):
         if self.rect.y >= ground_position_y:
             return True
         return False
 
-    def onTheTop(self):
+    def is_on_the_top(self):
         if self.rect.y <= 250:
             return True
         return False
 
     def jump(self):
-        if self.onTheGround():
+        if self.is_on_the_ground():
             self.movey -= 100
             self.is_jumping = True
 
-    def update(self, deltatime):
+    def is_during_jump(self):
+        if self.rect.y >= 250 and self.rect.y <= ground_position_y:
+            return True
+        return False
+
+    def update(self, game_deltatime):
         """
         Update sprite position
         """
 
-        if self.onTheTop():
-            self.movey += 50
+        slowdown = 300.0
+        player_speed = game_deltatime / slowdown
+        if self.is_on_the_top():
+            self.movey += 100
             self.is_jumping = False
 
-        if self.onTheGround() and not self.is_jumping:
+        if self.is_on_the_ground() and not self.is_jumping:
             self.movey = 0
             self.rect.y = 350
 
-        # self.rect.x = self.rect.x + self.movex
-        # self.rect.y = self.rect.y + self.movey
-        self.rect.y += self.movey * deltatime
+        self.rect.y += self.movey * player_speed
         self.rect.topleft = self.rect.x, self.rect.y
-        # # moving left
-        # if self.movex < 0:
-        #     self.frame += 1
-        #     if self.frame > 8 * animation_cycles:
-        #         self.frame = 1
-        #     self.image = self.images_walk_left[self.frame // animation_cycles]
 
-        # moving right
-        # if self.movex > 0:
         self.frame += 1
-        if self.is_jumping:
-            self.image = self.images_walk_right[4]
+        if self.is_jumping or self.is_during_jump():
             self.frame = 0
-        elif self.frame > 8 * animation_cycles:
+            self.image = self.images_frames[4]
+            return
+        elif self.frame > 8:
             self.frame = 0
-        self.image = self.images_walk_right[(self.frame // animation_cycles)]
+
+        self.image = self.images_frames[self.frame]
 
 
-        # hit_list = pygame.sprite.spritecollide(self, enemy_list, False)
-        # for enemy in hit_list:
-        #     self.health -= 1
-        #     print(self.health)
+class Human(pygame.sprite.Sprite):
+
+    def __init__(self, x, y):
+        pygame.sprite.Sprite.__init__(self)
+        self.images = get_scaled_images("human", (100, 150))
+        self.image = self.images[0]
+        self.rect = self.image.get_rect()
+        self.frame = 0
+        self.rect.x = x
+        self.rect.y = y
+        self.movey = 0
+        self.is_jumping = False
+
+    def jump(self):
+        if self.is_on_the_ground():
+            self.movey -= 100
+            self.is_jumping = True
+
+    def is_on_the_ground(self):
+        if self.rect.y >= 250:
+            return True
+        return False
+
+    def is_on_the_top(self):
+        if self.rect.y <= 150:
+            return True
+        return False
+
+    def is_during_jump(self):
+        if self.rect.y >= 150 and self.rect.y < 250:
+            return True
+        return False
+
+    def update(self, game_deltatime):
+        slowdown = 300.0
+        player_speed = game_deltatime / slowdown
+        self.rect.y += self.movey * player_speed
+
+        if self.is_on_the_top():
+            self.movey += 100
+            self.is_jumping = False
+
+        if self.is_on_the_ground() and not self.is_jumping:
+            self.movey = 0
+            self.rect.y = 250
+
+        if self.is_jumping or self.is_during_jump():
+            self.image = self.images[2]
+            self.frame = 0
+            return
+
+        elif self.frame == 3:
+            self.frame = 0
+
+        self.image = self.images[int(self.frame)]
+        self.frame += 0.5
