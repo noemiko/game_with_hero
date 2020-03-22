@@ -1,29 +1,37 @@
 import pygame
 from settings import ground_position_y
-from utils import get_scaled_images
+from utils import get_images
+from utils import scale_images
 
 
-class Duchshund(pygame.sprite.Sprite):
+class Player(pygame.sprite.Sprite):
 
     def __init__(self, x, y):
         pygame.sprite.Sprite.__init__(self)
-        self.movey = 0  # dy speed on y axis
-        self.frame = 0
-        self.images_frames = get_scaled_images("duchshund", (100, 50))
+        self.images_frames = self.load_images()
         self.image = self.images_frames[0]
         self.rect = self.image.get_rect()
-        self.rect.x = x  # player x position
-        self.rect.y = y  # player y positiony
+        self.frame = 0
+        self.rect.x = x
+        self.rect.y = y
+        self.movey = 0
         self.is_jumping = False
-        self.health = 0
+        self.health = 100
+        self.jump_heigh = 150
+        self.ground_level = 250
 
     def is_on_the_ground(self):
-        if self.rect.y >= ground_position_y:
+        if self.rect.y >= self.ground_level:
             return True
         return False
 
     def is_on_the_top(self):
-        if self.rect.y <= 250:
+        if self.rect.y <= self.jump_heigh:
+            return True
+        return False
+
+    def is_during_jump(self):
+        if self.rect.y >= self.jump_heigh and self.rect.y < self.ground_level:
             return True
         return False
 
@@ -32,10 +40,22 @@ class Duchshund(pygame.sprite.Sprite):
             self.movey -= 100
             self.is_jumping = True
 
-    def is_during_jump(self):
-        if self.rect.y >= 250 and self.rect.y <= ground_position_y:
-            return True
-        return False
+
+class Duchshund(Player):
+
+    def __init__(self, x, y):
+        Player.__init__(self, x, y)
+        self.jump_heigh = 250
+        self.ground_level = ground_position_y
+
+    def load_images(self):
+        images = get_images("duchshund")
+        return scale_images(images, (100, 50))
+
+    def jump(self):
+        if self.is_on_the_ground():
+            self.movey -= 100
+            self.is_jumping = True
 
     def update(self, game_deltatime):
         """
@@ -66,38 +86,10 @@ class Duchshund(pygame.sprite.Sprite):
         self.image = self.images_frames[self.frame]
 
 
-class Human(pygame.sprite.Sprite):
-
-    def __init__(self, x, y):
-        pygame.sprite.Sprite.__init__(self)
-        self.images = get_scaled_images("human", (100, 150))
-        self.image = self.images[0]
-        self.rect = self.image.get_rect()
-        self.frame = 0
-        self.rect.x = x
-        self.rect.y = y
-        self.movey = 0
-        self.is_jumping = False
-
-    def jump(self):
-        if self.is_on_the_ground():
-            self.movey -= 100
-            self.is_jumping = True
-
-    def is_on_the_ground(self):
-        if self.rect.y >= 250:
-            return True
-        return False
-
-    def is_on_the_top(self):
-        if self.rect.y <= 150:
-            return True
-        return False
-
-    def is_during_jump(self):
-        if self.rect.y >= 150 and self.rect.y < 250:
-            return True
-        return False
+class Human(Player):
+    def load_images(self):
+        images = get_images("human")
+        return scale_images(images, (100, 150))
 
     def update(self, game_deltatime):
         slowdown = 300.0
@@ -113,12 +105,12 @@ class Human(pygame.sprite.Sprite):
             self.rect.y = 250
 
         if self.is_jumping or self.is_during_jump():
-            self.image = self.images[2]
+            self.image = self.images_frames[2]
             self.frame = 0
             return
 
         elif self.frame == 3:
             self.frame = 0
 
-        self.image = self.images[int(self.frame)]
+        self.image = self.images_frames[int(self.frame)]
         self.frame += 0.5

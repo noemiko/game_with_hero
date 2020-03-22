@@ -2,32 +2,34 @@ import pygame
 import random
 from settings import worldy, worldx
 import os
+from utils import get_images
+
 
 class Background():
     def __init__(self):
-        self.backgroundImg = []
-        self.backgroundImg.append(pygame.image.load(os.path.join("images", "bg.png")))
-        self.backgroundImg.append(pygame.image.load(os.path.join("images", "bg.png")))
-        # self.backgroundImg.append(pygame.image.load('teren3.png'))
-        self.rectBg = self.backgroundImg[0].get_rect()
+        self.backgroundImg = get_images("backgrounds")
+        self.current = self.backgroundImg[0]
+        self.rectBg = self.current.get_rect()
         self.width = self.rectBg.width
         self.x = 0
-        self.x2 = self.width
+        self.next_x = self.width
         self.y = 0
         self.dx = -15
-        self.random1 = 0
-        self.random2 = 1
 
+    def change_image(self, image_index):
 
-    def update(self):
+        self.current = self.backgroundImg[image_index]
+
+        self.rectBg = self.current.get_rect()
+        self.width = self.rectBg.width
+
+    def update(self, ):
         self.x += self.dx
         if self.x <= -self.width:
             self.x = self.width
-            self.random1 = random.randint(0,1)
-        self.x2 += self.dx
-        if self.x2 <= -self.width:
-            self.x2 = self.width
-            self.random2 = random.randint(0,1)
+        self.next_x += self.dx
+        if self.next_x <= -self.width:
+            self.next_x = self.width
 
 
 

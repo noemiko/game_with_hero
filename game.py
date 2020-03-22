@@ -1,18 +1,13 @@
 import pygame
-import os
 import sys
 from random import randint
 
 from player import Duchshund, Human
-from background import Background
-# from enemy import Enemy
-from level import Level
+from level import Levels
 from obstacles import Cactus
 from settings import worldx, worldy
-from settings import WHITE
 from settings import fps
-from settings import walk_speed
-from settings import ground_position_y
+from settings import BLACK
 from counter import Counter
 from settings import ground_position_y
 
@@ -30,34 +25,17 @@ class Game:
 
     def setup(self):
         self._display_surface = pygame.display.set_mode([worldx, worldy])
-        self.background = Background()
+
         self.backdropbox = self._display_surface.get_rect()
         self.duchshund = Duchshund(0, ground_position_y)  # spawn player
         self.human = Human(250, 250)
         self.players_list = pygame.sprite.Group()
-        self.players_list.add(self.duchshund)
-        self.players_list.add(self.human)
+        self.players_list.add([self.duchshund, self.human])
 
         self.counter = Counter()
         self.cactuses = pygame.sprite.Group()
         self.respawn = 5
-
-        eloc = []
-        eloc = [50, 250]
-        # self.enemy_list = Level.bad(1, eloc)
-        self.v = 5
-        self.m = 1
-        gloc = []
-        tx = 64
-        ty = 64
-
-        i = 0
-        while i <= (worldx / tx) + tx:
-            gloc.append(i * tx)
-            i = i + 1
-
-        self.ground_list = Level.ground(1, gloc, tx, ty)
-        self.platform_list = Level.platform(1)
+        self.levels = Levels()
 
     def run(self):
         deltatime = 0
@@ -81,21 +59,27 @@ class Game:
             deltatime = self.clock.tick(fps)
             self.draw_world(deltatime)
 
-    def draw_world(self, deltatime):
-        self._display_surface.blit(self.background.backgroundImg[self.background.random1],
-                                   (self.background.x, self.background.y))
-        self._display_surface.blit(self.background.backgroundImg[self.background.random2],
-                                   (self.background.x2, self.background.y))
+    def draw_points(self):
+
         self._display_surface.blit(self.counter.counterText, (730, 10))
+        font = pygame.font.Font("freesansbold.ttf", 22)
+
+        dog_health = font.render(f"duchshund health {self.duchshund.health}", True, BLACK)
+        human_health = font.render(f"human health {self.human.health}", True, BLACK)
+
+        self._display_surface.blit(dog_health, (10, 10))
+        self._display_surface.blit(human_health, (250, 10))
+
+    def draw_world(self, deltatime):
+        self.levels.update(self._display_surface, self.counter.count)
+
+        self.draw_points()
         self.counter.update()
 
         self.duchshund.update(deltatime)
         self.human.update(deltatime)
-        self.background.update()
 
         self.players_list.draw(self._display_surface)  # refresh player position
-        self.ground_list.draw(self._display_surface)  # refresh ground
-        # self.platform_list.draw(self._display_surface)  # refresh platforms
 
         self.respawn -= 1
         if self.respawn == 0:
@@ -105,12 +89,12 @@ class Game:
         for cactus in self.cactuses:
             is_collision_dog = pygame.sprite.collide_rect_ratio(0.7)(self.duchshund, cactus)
             is_collision_human = pygame.sprite.collide_rect_ratio(0.7)(self.human, cactus)
-            if (is_collision_dog):
-                self.counter -= 100
+            if is_collision_dog:
+                self.duchshund.health -= 1
                 print("Dog collision")
 
-            if (is_collision_human):
-                self.counter -= 100
+            if is_collision_human:
+                self.human.health -= 1
                 print("Human collision")
 
         self.cactuses.update()
