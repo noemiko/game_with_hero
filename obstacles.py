@@ -1,26 +1,75 @@
-import pygame
-import os
 from random import randint
 
+import pygame
 
-class Cactus(pygame.sprite.Sprite):
+from utils import get_images
+from utils import scale_images
+
+
+class Obstacle(pygame.sprite.Sprite):
     def __init__(self):
         pygame.sprite.Sprite.__init__(self)
-        cactusImg = []
-        for i in range(1, 5):
-            # img = pygame.image.load(os.path.join('images', 'hero' + str(i) + '_kol_filled.png'))
-            img = pygame.image.load(os.path.join('images', 'kaktus' + str(i) + '.png'))
-            img = pygame.transform.scale(img, (50, 70), )
-            img.convert_alpha()
-            cactusImg.append(img)
-
-        rand = randint(0, 3)
-        self.image = cactusImg[rand]
+        images = get_images(self.images_folder)
+        self.images = scale_images(images, self.images_scale)
+        self.image = self.get_current()
         self.rect = self.image.get_rect()
         self.x = 800
         self.y = 350
         self.rect.move_ip(self.x, self.y)
         self.dx = -15
 
+    @property
+    def images_folder(self):
+        return "obstacles/cactuses"
+
+    @property
+    def images_scale(self):
+        return (50, 70)
+
     def update(self):
         self.rect = self.rect.move(self.dx, 0)
+
+    def get_current(self):
+        rand = randint(0, len(self.images) - 1)
+        return self.images[rand]
+
+
+class Cactus(Obstacle):
+    @property
+    def images_folder(self):
+        return "obstacles/cactuses"
+
+    @property
+    def images_scale(self):
+        return (50, 70)
+
+
+class Flower(Obstacle):
+    @property
+    def images_folder(self):
+        return "obstacles/flowers"
+
+    @property
+    def images_scale(self):
+        return (80, 100)
+
+
+class Windmill(Obstacle):
+
+    @property
+    def images_folder(self):
+        return "obstacles/windmills"
+
+    @property
+    def images_scale(self):
+        return (100, 120)
+
+
+class Stone(Obstacle):
+    @property
+    def images_folder(self):
+        return "obstacles/stones"
+
+    @property
+    def images_scale(self):
+        return (70, 90)

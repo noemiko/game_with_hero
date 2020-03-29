@@ -21,6 +21,7 @@ def get_images(folder: str) -> List[Surface]:
     sorted_images = sorted(all_images)
     for image_ in sorted_images:
         surface = image.load(image_)
+
         images.append(surface)
     return images
 
@@ -37,3 +38,5 @@ def scale_images(images: List[Surface], scala: Tuple) -> List[Surface]:
         scaled_image = transform.scale(image, scala)
         scaled_images.append(scaled_image)
     return scaled_images
+
+# def set_inivisible_bacgroudn()
