@@ -33,9 +33,10 @@ class Game:
         self.players_list.add([self.duchshund, self.human])
 
         self.counter = Counter()
-        self.cactuses = pygame.sprite.Group()
-        self.respawn = 5
+
+
         self.levels = Levels()
+        self.obstacles = pygame.sprite.Group()
 
     def run(self):
         deltatime = 0
@@ -81,14 +82,13 @@ class Game:
 
         self.players_list.draw(self._display_surface)  # refresh player position
 
-        self.respawn -= 1
-        if self.respawn == 0:
-            self.cactuses.add(Cactus())
-            self.respawn = randint(60, 70)
+        new_obstacles = self.levels.get_obstacles()
+        if new_obstacles:
+            self.obstacles.add(new_obstacles)
 
-        for cactus in self.cactuses:
-            is_collision_dog = pygame.sprite.collide_rect_ratio(0.7)(self.duchshund, cactus)
-            is_collision_human = pygame.sprite.collide_rect_ratio(0.7)(self.human, cactus)
+        for obs in self.obstacles:
+            is_collision_dog = pygame.sprite.collide_rect_ratio(0.7)(self.duchshund, obs)
+            is_collision_human = pygame.sprite.collide_rect_ratio(0.7)(self.human, obs)
             if is_collision_dog:
                 self.duchshund.health -= 1
                 print("Dog collision")
@@ -96,9 +96,9 @@ class Game:
             if is_collision_human:
                 self.human.health -= 1
                 print("Human collision")
-
-        self.cactuses.update()
-        self.cactuses.draw(self._display_surface)
+        if self.obstacles:
+            self.obstacles.update()
+            self.obstacles.draw(self._display_surface)
         pygame.display.update()
         pygame.display.flip()
 
