@@ -2,6 +2,7 @@ from random import randint
 
 import pygame
 
+from abc import abstractmethod
 from utils import get_images
 from utils import scale_images
 
@@ -19,12 +20,14 @@ class Obstacle(pygame.sprite.Sprite):
         self.dx = -15
 
     @property
+    @abstractmethod
     def images_folder(self):
-        return "obstacles/cactuses"
+        pass
 
     @property
+    @abstractmethod
     def images_scale(self):
-        return (50, 70)
+        pass
 
     def update(self):
         self.rect = self.rect.move(self.dx, 0)
