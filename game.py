@@ -16,12 +16,34 @@ Main loop
 """
 
 
+def text_objects(text, font):
+    textSurface = font.render(text, True, black)
+    return textSurface, textSurface.get_rect()
+
+
+def message_display(text):
+    largeText = pygame.font.Font('freesansbold.ttf', 115)
+    TextSurf, TextRect = text_objects(text, largeText)
+    TextRect.center = (( worldx / 2), (worldy / 2))
+    gameDisplay.blit(TextSurf, TextRect)
+
+    pygame.display.update()
+
+    time.sleep(2)
+
+    game_loop()
+
+
+def crash():
+    message_display('You Crashed')
+
 class Game:
     def __init__(self):
         self.clock = pygame.time.Clock()
         self._display_surface = pygame.display.set_mode((800, 500))
         pygame.display.set_caption("Run")
         pygame.init()
+        self.is_running = True
 
     def setup(self):
         self._display_surface = pygame.display.set_mode([worldx, worldy])
@@ -40,7 +62,7 @@ class Game:
 
     def run(self):
         deltatime = 0
-        while True:
+        while self.is_running:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     pygame.quit()
@@ -53,9 +75,10 @@ class Game:
                         self.human.jump()
                 if event.type == pygame.KEYUP:
                     if event.key == ord("q") or event.key == pygame.K_ESCAPE:
-                        pygame.quit()
-                        print("Quit")
-                        sys.exit()
+                        self.is_running = False
+                        # pygame.quit()
+                        # print("Quit")
+                        # sys.exit()
             # compute how many milliseconds have passed since the previous call.
             deltatime = self.clock.tick(fps)
             self.draw_world(deltatime)
