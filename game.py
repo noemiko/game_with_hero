@@ -1,10 +1,9 @@
 import pygame
 import sys
-from random import randint
-
+import time
 from player import Duchshund, Human
 from level import Levels
-from obstacles import Cactus
+from messages import message_display
 from settings import worldx, worldy
 from settings import fps
 from settings import BLACK
@@ -22,8 +21,11 @@ class Game:
         self._display_surface = pygame.display.set_mode((800, 500))
         pygame.display.set_caption("Run")
         pygame.init()
+        self.is_running = True
 
     def setup(self):
+        print("Set up")
+
         self._display_surface = pygame.display.set_mode([worldx, worldy])
 
         self.backdropbox = self._display_surface.get_rect()
@@ -34,13 +36,21 @@ class Game:
 
         self.counter = Counter()
 
-
         self.levels = Levels()
         self.obstacles = pygame.sprite.Group()
 
+        message_display(self._display_surface, 'Loading new game', "click r button to try again")
+        time.sleep(1)
+
+    def crash(self):
+        message_display(self._display_surface, 'You Lost!', "click r button to try again")
+
+    def show_winning_message(self):
+        message_display(self._display_surface, 'You Win!', "click r button to try again")
+
     def run(self):
         deltatime = 0
-        while True:
+        while self.is_running:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     pygame.quit()
@@ -49,13 +59,18 @@ class Game:
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_SPACE:
                         self.duchshund.jump()
-                    if event.key == event.key == ord("w"):
+                    if event.key == ord("w"):
                         self.human.jump()
+
                 if event.type == pygame.KEYUP:
                     if event.key == ord("q") or event.key == pygame.K_ESCAPE:
                         pygame.quit()
                         print("Quit")
                         sys.exit()
+
+                    if event.key == pygame.K_r:
+                        self.setup()
+
             # compute how many milliseconds have passed since the previous call.
             deltatime = self.clock.tick(fps)
             self.draw_world(deltatime)
@@ -74,6 +89,12 @@ class Game:
     def draw_world(self, deltatime):
         self.levels.update(self._display_surface, self.counter.count)
 
+        if self.duchshund.health < 0 or self.human.health < 0:
+            self.crash()
+            return
+        elif self.levels.is_all_passed():
+            self.show_winning_message()
+            return
         self.draw_points()
         self.counter.update()
 
@@ -96,6 +117,7 @@ class Game:
             if is_collision_human:
                 self.human.health -= 1
                 print("Human collision")
+
         if self.obstacles:
             self.obstacles.update()
             self.obstacles.draw(self._display_surface)
