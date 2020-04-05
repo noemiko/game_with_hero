@@ -1,9 +1,11 @@
 import pygame as pg
+from abc import abstractmethod, ABC
 
 from settings import world_width, world_heigh
 from settings import fps
 
-class States():
+
+class States(ABC):
     def __init__(self):
         self.screen = pg.display.set_mode((world_width, world_heigh))
         self.screen_rect = self.screen.get_rect()
@@ -12,6 +14,18 @@ class States():
         self.next = None
         self.quit = False
         self.previous = None
+
+    @abstractmethod
+    def startup(self):
+        pass
+
+    @abstractmethod
+    def update(self):
+        pass
+
+    @abstractmethod
+    def get_event(self, event):
+        pass
 
 
 class AppCore:
@@ -61,5 +75,3 @@ class AppCore:
             self.update(delta_time)
             pg.display.update()
             pg.display.flip()
-
-
