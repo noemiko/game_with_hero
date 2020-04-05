@@ -1,7 +1,5 @@
 import pygame as pg
 
-import time
-
 from states.game.player import Duchshund, Human
 from states.game.level import Levels
 from messages import message_display

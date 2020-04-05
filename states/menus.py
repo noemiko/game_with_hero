@@ -72,10 +72,10 @@ class MenuCore:
 
     def select_option(self, i):
         """select menu option via keys or mouse"""
-        if i == len(self.next_list):
+        if i == len(self.states_names_options):
             self.quit = True
         else:
-            self.next = self.next_list[i]
+            self.next = self.states_names_options[i]
             self.done = True
             self.selected_index = 0
 
@@ -98,10 +98,10 @@ class Menu(States, MenuCore):
         States.__init__(self)
         MenuCore.__init__(self)
         self.next = "game"
-        self.options = ["Play", "Options", "Quit"]
-        self.next_list = ["game", "options"]
+        self.options = ["Play","The best scores", "Choose heroes", "Options", "About author", "Quit"]
+        self.states_names_options = ["game", "todo", "todo", "options", "todo"]
         self.pre_render_options()
-        self.from_bottom = 200
+        self.from_bottom = 50
         self.spacer = 75
 
     def cleanup(self):
@@ -130,7 +130,7 @@ class Options(States, MenuCore):
         MenuCore.__init__(self)
         self.next = "menu"
         self.options = ["Music", "Sound", "Graphics", "Controls", "Main Menu"]
-        self.next_list = ["options", "options", "options", "options", "menu"]
+        self.states_names_options = ["options", "options", "options", "options", "menu"]
         self.from_bottom = 100
         self.spacer = 75
         self.pre_render_options()
