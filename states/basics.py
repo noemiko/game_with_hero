@@ -3,6 +3,7 @@ import pygame as pg
 from messages import message_display
 from app_core import States
 from settings import WHITE
+
 """
 Main loop
 """
@@ -12,9 +13,6 @@ class WorkInProgress(States):
     def __init__(self):
         States.__init__(self)
         self.next = "menu"
-
-    def cleanup(self):
-        print("cleaning up Game state stuff")
 
     def startup(self):
         print("starting Game state stuff")

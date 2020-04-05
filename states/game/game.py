@@ -19,9 +19,6 @@ class Game(States):
         States.__init__(self)
         self.next = "menu"
 
-    def cleanup(self):
-        print("cleaning up Game state stuff")
-
     def startup(self):
         print("starting Game state stuff")
         self.duchshund = Duchshund(0, ground_position_y)  # spawn player

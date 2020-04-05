@@ -28,7 +28,7 @@ class States(ABC):
         pass
 
 
-class AppCore:
+class AppStateMachine:
     def __init__(self):
         self.done = False
         self.fps = fps
@@ -38,19 +38,19 @@ class AppCore:
 
     def setup_states(self, state_dict, start_state):
         """
+        Define all available states in the system.
 
-        :param state_dict:
-        :param start_state:
-        :return:
+        :param state_dict: dictionary with name of the state and instance of it {str: State}
+        :param start_state: name of the first used state from state_dict
         """
         self.state_dict = state_dict
         self.state_name = start_state
-        self.state = self.state_dict[self.state_name]  # try except
+        self.state = self.state_dict[self.state_name]
 
     def flip_state(self):
         self.state.done = False
+        # get next state to setup
         previous, self.state_name = self.state_name, self.state.next
-        self.state.cleanup()
         self.state = self.state_dict[self.state_name]
         self.state.startup()
         self.state.previous = previous

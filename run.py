@@ -1,16 +1,15 @@
 import pygame as pg
 import sys
-from app_core import AppCore
-from states.menus import Menu, Options
+from app_core import AppStateMachine
+from states.menus import MainMenu, Options
 from states.game.game import Game
 from states.basics import WorkInProgress
 
-
 if __name__ == "__main__":
     pg.init()
-    app = AppCore()
-    state_dict ={
-        "menu": Menu(),
+    app = AppStateMachine()
+    state_dict = {
+        "menu": MainMenu(),
         "game": Game(),
         "todo": WorkInProgress(),
         "options": Options()
