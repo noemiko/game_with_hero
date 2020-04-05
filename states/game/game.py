@@ -46,17 +46,26 @@ class Game(States):
 
     def update(self, screen, deltatime):
         self.levels.update(screen, self.counter.count)
+        self.handle_collision()
         if self.duchshund.health < 90 or self.human.health < 0:
             self.show_fail_message(screen)
             return
         elif self.levels.is_all_passed():
             self.show_winning_message(screen)
             return
-        self.draw_world(deltatime, screen)
+        new_obstacles = self.levels.get_obstacles()
+        if new_obstacles:
+            self.obstacles.add(new_obstacles)
+        self.counter.update()
+        self.duchshund.update(deltatime)
+        self.human.update(deltatime)
+        self.obstacles.update()
+        self.draw(screen)
 
     def draw(self, screen):
-        print("draw game")
-        pass
+        self.players_list.draw(screen)  # refresh player position
+        self.obstacles.draw(screen)
+        self.draw_points(screen)
 
     def show_fail_message(self, screen):
         message_display(screen, "You Lost!", "click r button to try again")
@@ -75,19 +84,7 @@ class Game(States):
         screen.blit(dog_health, (10, 10))
         screen.blit(human_health, (250, 10))
 
-    def draw_world(self, deltatime, screen):
-        self.draw_points(screen)
-        self.counter.update()
-
-        self.duchshund.update(deltatime)
-        self.human.update(deltatime)
-
-        self.players_list.draw(screen)  # refresh player position
-
-        new_obstacles = self.levels.get_obstacles()
-        if new_obstacles:
-            self.obstacles.add(new_obstacles)
-
+    def handle_collision(self):
         for obs in self.obstacles:
             is_collision_dog = pg.sprite.collide_rect_ratio(0.7)(self.duchshund, obs)
             is_collision_human = pg.sprite.collide_rect_ratio(0.7)(self.human, obs)
@@ -98,7 +95,3 @@ class Game(States):
             if is_collision_human:
                 self.human.health -= 1
                 print("Human collision")
-
-        if self.obstacles:
-            self.obstacles.update()
-            self.obstacles.draw(screen)

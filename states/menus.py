@@ -98,8 +98,8 @@ class Menu(States, MenuCore):
         States.__init__(self)
         MenuCore.__init__(self)
         self.next = "game"
-        self.options = ["Play","The best scores", "Choose heroes", "Options", "About author", "Quit"]
-        self.states_names_options = ["game", "todo", "todo", "options", "todo"]
+        self.options = ["Play", "The best scores", "Choose heroes", "Options", "About author", "Quit"]
+        self.states_names_options = ["game", "todo", "todo", "options", "todo"]  # last option is by default quit
         self.pre_render_options()
         self.from_bottom = 50
         self.spacer = 75
