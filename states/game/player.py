@@ -1,13 +1,13 @@
-import pygame
+import pygame as pg
 from settings import ground_position_y
-from utils import get_images
-from utils import scale_images
+from states.game.utils import get_images
+from states.game.utils import scale_images
 
 
-class Player(pygame.sprite.Sprite):
+class Player(pg.sprite.Sprite):
 
     def __init__(self, x, y):
-        pygame.sprite.Sprite.__init__(self)
+        pg.sprite.Sprite.__init__(self)
         self.images_frames = self.load_images()
         self.image = self.images_frames[0]
         self.rect = self.image.get_rect()
@@ -19,6 +19,7 @@ class Player(pygame.sprite.Sprite):
         self.health = 100
         self.jump_heigh = 150
         self.ground_level = 250
+
 
     def is_on_the_ground(self):
         if self.rect.y >= self.ground_level:
@@ -57,6 +58,11 @@ class Duchshund(Player):
             self.movey -= 100
             self.is_jumping = True
 
+    def get_event(self, event):
+        if event.type == pg.KEYDOWN:
+            if event.key == pg.K_SPACE:
+                self.jump()
+
     def update(self, game_deltatime):
         """
         Update sprite position
@@ -90,6 +96,11 @@ class Human(Player):
     def load_images(self):
         images = get_images("human")
         return scale_images(images, (100, 150))
+
+    def get_event(self, event):
+        if event.type == pg.KEYDOWN:
+            if event.key == ord("w"):
+                self.jump()
 
     def update(self, game_deltatime):
         slowdown = 300.0

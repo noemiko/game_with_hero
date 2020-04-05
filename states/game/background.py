@@ -1,8 +1,4 @@
-import pygame
-import random
-from settings import worldy, worldx
-import os
-from utils import get_images
+from states.game.utils import get_images
 
 
 class Background():
@@ -30,6 +26,3 @@ class Background():
         self.next_x += self.dx
         if self.next_x <= -self.width:
             self.next_x = self.width
-
-
-

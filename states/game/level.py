@@ -1,8 +1,8 @@
 from random import randint
 from typing import NamedTuple
 
-from background import Background
-from obstacles import Cactus, Obstacle, Flower, Windmill, Stone
+from states.game.background import Background
+from states.game.obstacles import Cactus, Obstacle, Flower, Windmill, Stone
 
 
 class LevelDetails(NamedTuple):
