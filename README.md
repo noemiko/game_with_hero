@@ -13,10 +13,10 @@ Below is gif represent this project.
 
 ```
 
-virtualenv venv3 -ppython3
+virtualenv venv3 -ppython3.8
 source venv3/bin/activate
 pip3 install -r requirements.txt
-
+python run.py
 ```
 
 on windows

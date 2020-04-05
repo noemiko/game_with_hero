@@ -8,7 +8,7 @@ from states.game.game import Game
 if __name__ == "__main__":
     pg.init()
     app = AppCore()
-    state_dict = {
+    state_dict ={
         "menu": Menu(),
         "game": Game(),
         "options": Options()

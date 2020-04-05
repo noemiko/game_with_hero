@@ -1,5 +1,6 @@
 # Environments
 venv3/
+venv3.8/
 # Byte-compiled / optimized / DLL files
 __pycache__/
 

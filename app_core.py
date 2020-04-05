@@ -3,6 +3,16 @@ import pygame as pg
 from settings import world_width, world_heigh
 from settings import fps
 
+class States():
+    def __init__(self):
+        self.screen = pg.display.set_mode((world_width, world_heigh))
+        self.screen_rect = self.screen.get_rect()
+
+        self.done = False
+        self.next = None
+        self.quit = False
+        self.previous = None
+
 
 class AppCore:
     def __init__(self):
@@ -53,10 +63,3 @@ class AppCore:
             pg.display.flip()
 
 
-class States(AppCore):
-    def __init__(self):
-        AppCore.__init__(self)
-        self.done = False
-        self.next = None
-        self.quit = False
-        self.previous = None

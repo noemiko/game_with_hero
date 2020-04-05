@@ -35,7 +35,6 @@ class Game(States):
 
         self.levels = Levels()
         self.obstacles = pg.sprite.Group()
-        time.sleep(1)
 
     def get_event(self, event):
         self.duchshund.get_event(event)
