@@ -1,0 +1,77 @@
+import pygame as pg
+from abc import abstractmethod, ABC
+
+from settings import world_width, world_heigh
+from settings import fps
+
+
+class States(ABC):
+    def __init__(self):
+        self.screen = pg.display.set_mode((world_width, world_heigh))
+        self.screen_rect = self.screen.get_rect()
+
+        self.done = False
+        self.next = None
+        self.quit = False
+        self.previous = None
+
+    @abstractmethod
+    def startup(self):
+        pass
+
+    @abstractmethod
+    def update(self):
+        pass
+
+    @abstractmethod
+    def get_event(self, event):
+        pass
+
+
+class AppStateMachine:
+    def __init__(self):
+        self.done = False
+        self.fps = fps
+        self.screen = pg.display.set_mode((world_width, world_heigh))
+        self.screen_rect = self.screen.get_rect()
+        self.clock = pg.time.Clock()
+
+    def setup_states(self, state_dict, start_state):
+        """
+        Define all available states in the system.
+
+        :param state_dict: dictionary with name of the state and instance of it {str: State}
+        :param start_state: name of the first used state from state_dict
+        """
+        self.state_dict = state_dict
+        self.state_name = start_state
+        self.state = self.state_dict[self.state_name]
+
+    def flip_state(self):
+        self.state.done = False
+        # get next state to setup
+        previous, self.state_name = self.state_name, self.state.next
+        self.state = self.state_dict[self.state_name]
+        self.state.startup()
+        self.state.previous = previous
+
+    def update(self, deltatime):
+        if self.state.quit:
+            self.done = True
+        elif self.state.done:
+            self.flip_state()
+        self.state.update(self.screen, deltatime)
+
+    def event_loop(self):
+        for event in pg.event.get():
+            if event.type == pg.QUIT:
+                self.done = True
+            self.state.get_event(event)
+
+    def main_game_loop(self):
+        while not self.done:
+            delta_time = self.clock.tick(self.fps)
+            self.event_loop()
+            self.update(delta_time)
+            pg.display.update()
+            pg.display.flip()

@@ -16,7 +16,7 @@ def get_images(folder: str) -> List[Surface]:
     :return: List of surfaces
     """
     images = []
-    image_path = os.path.join(f'images', folder)
+    image_path = os.path.join(f'states/game/images', folder)
     all_images = glob.glob(f"{image_path}/*")
     sorted_images = sorted(all_images)
     for image_ in sorted_images:
@@ -38,5 +38,3 @@ def scale_images(images: List[Surface], scala: Tuple) -> List[Surface]:
         scaled_image = transform.scale(image, scala)
         scaled_images.append(scaled_image)
     return scaled_images
-
-# def set_inivisible_bacgroudn()
