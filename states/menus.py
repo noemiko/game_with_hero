@@ -1,8 +1,9 @@
 import pygame as pg
 
-from settings import BLACK, WHITE, BLUE
+from settings import BLACK, WHITE, BLUE, world_width, world_heigh
 
 from app_core import States
+import globals
 
 
 class MenuCore:
@@ -104,7 +105,7 @@ class MainMenu(States, MenuCore):
         self.options = [
             "Play", "The best scores", "Choose heroes", "Options", "About author", "Quit"
         ]
-        self.states_names_options = ["game", "todo", "todo", "options", "todo"]  # last option is by default quit
+        self.states_names_options = ["game", "scores", "todo", "options", "todo"]  # last option is by default quit
         self.pre_render_options()
         self.from_bottom = 50
         self.spacer = 75
@@ -150,3 +151,36 @@ class Options(States, MenuCore):
     def update(self, screen, deltatime):
         self.update_menu()
         self.draw(screen)
+
+
+class Scores(States):
+    def __init__(self):
+        States.__init__(self)
+        self.next = "menu"
+        self.FONT = pg.font.Font('freesansbold.ttf', 30)
+
+    def startup(self):
+        print("starting Game state stuff")
+
+    def get_event(self, event):
+        if event.type == pg.KEYDOWN:
+            self.done = True
+        elif event.type == pg.MOUSEBUTTONDOWN:
+            self.done = True
+
+    def update(self, screen, deltatime):
+        import datetime
+        self.draw(screen)
+        scores = ["Nickname                   points                   date",
+                  "Anna           121212p      2018.10.02",
+                  "Marina         22323        2018.10.02"]
+        for index, text in enumerate(scores):
+            text_surface = self.FONT.render(text, True, BLACK)
+            rect = text_surface.get_rect()
+            rect.center = (world_width/2, 50+(index*100))
+            screen.blit(text_surface, rect)
+
+        print(globals.nickname)
+
+    def draw(self, screen):
+        screen.fill(WHITE)

@@ -2,4 +2,4 @@ def init():
     global nickname
 
 
-nickname = "Anonimous"
+nickname = "Anonymous"
