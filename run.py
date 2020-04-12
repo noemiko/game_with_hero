@@ -1,7 +1,7 @@
 import pygame as pg
 import sys
 from app_core import AppStateMachine
-from states.menus import MainMenu, Options, Scores
+from states.menu.menus import MainMenu, Options, Scores
 from states.game.game import Game
 from states.basics import WorkInProgress, NameInput
 from globals import init as init_globals
@@ -18,7 +18,7 @@ if __name__ == "__main__":
         "options": Options(),
         "scores": Scores()
     }
-    app.setup_states(state_dict, "scores")
+    app.setup_states(state_dict, "nickname")
     app.main_game_loop()
     pg.quit()
     sys.exit()

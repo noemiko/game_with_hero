@@ -1,7 +1,7 @@
 import pygame as pg
 from settings import ground_position_y
-from states.game.utils import get_images
-from states.game.utils import scale_images
+from utils import get_images
+from utils import scale_images
 
 
 class Player(pg.sprite.Sprite):

@@ -1,6 +1,7 @@
 import os
 from typing import List, Tuple
 import glob
+import csv
 
 from pygame import Surface
 from pygame import image
@@ -38,3 +39,16 @@ def scale_images(images: List[Surface], scala: Tuple) -> List[Surface]:
         scaled_image = transform.scale(image, scala)
         scaled_images.append(scaled_image)
     return scaled_images
+
+
+def open_file(file_name):
+    path = os.path.join(f'./', file_name)
+    with open(path, 'r') as file:
+        return list(csv.reader(file))
+
+
+def write_to_file(file_name, rows):
+    path = os.path.join(f'./', file_name)
+    with open(path, 'w') as file:
+        writer = csv.writer(file, delimiter=",")
+        writer.writerows(rows)

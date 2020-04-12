@@ -3,12 +3,12 @@ import pygame as pg
 from messages import message_display
 from app_core import States
 from settings import WHITE
-from settings import world_width, world_heigh, BLACK
+from settings import world_width, world_heigh, BLACK, nickname_max_length
 import globals
+
 """
 Main loop
 """
-
 
 
 class NameInput(States):
@@ -31,30 +31,26 @@ class NameInput(States):
         if event.type == pg.KEYDOWN:
             if self.active:
                 if event.key == pg.K_RETURN:
-                    print(self.text)
-                    globals.nickname = self.text
+                    if self.text:
+                        globals.nickname = self.text
                     self.done = True
 
                 elif event.key == pg.K_BACKSPACE:
                     self.text = self.text[:-1]
                 else:
-                    self.text += event.unicode
+                    if len(self.text) != nickname_max_length:
+                        self.text += event.unicode
                 # Re-render the text.
-                self.txt_surface = self.FONT.render(self.text, True, self.color)
-        # if event.type == pg.KEYDOWN:
-        #     self.done = True
-        # elif event.type == pg.MOUSEBUTTONDOWN:
-        #     self.done = True
 
     def update(self, screen, deltatime):
         self.draw(screen)
         width = max(50, self.txt_surface.get_width() + 10)
         self.rect.w = width
+        self.txt_surface = self.FONT.render(self.text, True, self.color)
 
     def draw(self, screen):
         screen.fill(WHITE)
         screen.blit(self.txt_surface, (self.rect.x + 5, self.rect.y + 5))
-        # Blit the rect.
         text_surface = self.FONT.render("Input your nickname", True, BLACK)
         rect = text_surface.get_rect()
         rect.center = (world_width / 2 - 50, world_heigh / 2 - 50)
@@ -82,7 +78,7 @@ class WorkInProgress(States):
     def update(self, screen, deltatime):
         self.draw(screen)
         print(globals.nickname)
-        message_display(screen, "TODO", "todo "+globals.nickname)
+        message_display(screen, "TODO", "todo " + globals.nickname)
 
     def draw(self, screen):
         screen.fill(WHITE)
