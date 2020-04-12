@@ -24,21 +24,22 @@ class NameInput(States):
     def startup(self):
         print("starting Game state stuff")
 
+    def handle_enter_event(self):
+        if not self.text:
+            self.color = pg.Color("red")
+            return
+        globals.nickname = self.text
+        self.done = True
+
     def get_event(self, event):
         if event.type == pg.KEYDOWN:
             if event.key == pg.K_RETURN:
-                if not self.text:
-                    self.color = pg.Color("red")
-                    return
-                globals.nickname = self.text
-                self.done = True
-
+                self.handle_enter_event()
             elif event.key == pg.K_BACKSPACE:
                 self.text = self.text[:-1]
             else:
                 if len(self.text) != nickname_max_length:
                     self.text += event.unicode
-                # Re-render the text.
 
     def update(self, screen, deltatime):
         self.draw(screen)
