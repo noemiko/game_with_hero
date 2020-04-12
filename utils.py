@@ -48,12 +48,18 @@ def scale_images(images: List[Surface], scala: Tuple) -> List[Surface]:
 
 def open_file(file_name):
     path = os.path.join(f'./', file_name)
-    with open(path, 'r') as file:
-        return list(csv.reader(file))
+    try:
+        with open(path, 'r') as file:
+            return list(csv.reader(file))
+    except FileNotFoundError:
+        return []
 
 
 def write_to_file(file_name, rows):
     path = os.path.join(f'./', file_name)
-    with open(path, 'w') as file:
-        writer = csv.writer(file, delimiter=",")
-        writer.writerows(rows)
+    try:
+        with open(path, 'w') as file:
+            writer = csv.writer(file, delimiter=",")
+            writer.writerows(rows)
+    except FileNotFoundError:
+        return []
