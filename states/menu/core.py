@@ -2,8 +2,6 @@ import pygame as pg
 
 from settings import BLACK, WHITE, BLUE
 
-from app_core import States
-
 
 class MenuCore:
     def __init__(self):
@@ -94,59 +92,3 @@ class MenuCore:
     def draw(self, screen):
         screen.fill(WHITE)
         self.draw_menu(screen)
-
-
-class MainMenu(States, MenuCore):
-    def __init__(self):
-        States.__init__(self)
-        MenuCore.__init__(self)
-        self.next = "game"
-        self.options = [
-            "Play", "The best scores", "Choose heroes", "Options", "About author", "Quit"
-        ]
-        self.states_names_options = ["game", "todo", "todo", "options", "todo"]  # last option is by default quit
-        self.pre_render_options()
-        self.from_bottom = 50
-        self.spacer = 75
-
-    def cleanup(self):
-        print("cleaning up Main Menu state stuff")
-
-    def startup(self):
-        print("starting Main Menu state stuff")
-
-    def get_event(self, event):
-        if event.type == pg.QUIT:
-            self.quit = True
-        self.get_event_menu(event)
-
-    def update(self, screen, deltatime):
-        self.update_menu()
-        self.draw(screen)
-
-
-class Options(States, MenuCore):
-    def __init__(self):
-        States.__init__(self)
-        MenuCore.__init__(self)
-        self.next = "menu"
-        self.options = ["Music", "Sound", "Graphics", "Controls", "Main Menu"]
-        self.states_names_options = ["options", "options", "options", "options", "menu"]
-        self.from_bottom = 100
-        self.spacer = 75
-        self.pre_render_options()
-
-    def cleanup(self):
-        print("cleaning up Options state stuff")
-
-    def startup(self):
-        print("starting Options state stuff")
-
-    def get_event(self, event):
-        if event.type == pg.QUIT:
-            self.quit = True
-        self.get_event_menu(event)
-
-    def update(self, screen, deltatime):
-        self.update_menu()
-        self.draw(screen)

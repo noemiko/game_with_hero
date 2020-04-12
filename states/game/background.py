@@ -1,4 +1,4 @@
-from states.game.utils import get_images
+from utils import get_images
 
 
 class Background():

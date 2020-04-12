@@ -1,3 +1,4 @@
+from datetime import timezone, datetime
 import pygame as pg
 
 from states.game.player import Duchshund, Human
@@ -8,6 +9,8 @@ from settings import BLACK
 from states.game.counter import Counter
 from settings import ground_position_y
 from app_core import States
+from states.game.scores import save_new_scores, ScoreRow
+import globals
 
 """
 Main loop
@@ -36,10 +39,18 @@ class Game(States):
         self.human.get_event(event)
         if event.type == pg.KEYDOWN:
             if event.key == ord("q") or event.key == pg.K_ESCAPE:
+                self.save_scores()
                 self.done = True
 
             if event.key == pg.K_r:
+                self.save_scores()
                 self.startup()
+
+    def save_scores(self):
+        user_points = self.duchshund.health + self.human.health + self.counter.count
+        date = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M")
+        score_row = ScoreRow(nickname=globals.nickname, points=user_points, date=date)
+        save_new_scores(score_row)
 
     def update(self, screen, deltatime):
         self.levels.update(screen, self.counter.count)
