@@ -43,8 +43,9 @@ class NameInput(States):
 
     def update(self, screen, deltatime):
         self.draw(screen)
-        width = max(50, self.txt_surface.get_width() + 10)
-        self.rect.w = width
+        char_size = 10
+        box_width = max(50, self.txt_surface.get_width() + char_size)
+        self.rect.w = box_width
         self.txt_surface = self.FONT.render(self.text, True, self.color)
 
     def draw(self, screen):
@@ -76,7 +77,6 @@ class WorkInProgress(States):
 
     def update(self, screen, deltatime):
         self.draw(screen)
-        print(globals.nickname)
         message_display(screen, "TODO", "todo " + globals.nickname)
 
     def draw(self, screen):

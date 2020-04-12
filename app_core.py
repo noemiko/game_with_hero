@@ -20,7 +20,7 @@ class States(ABC):
         pass
 
     @abstractmethod
-    def update(self):
+    def update(self, screen, deltatime):
         pass
 
     @abstractmethod

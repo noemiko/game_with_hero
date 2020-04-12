@@ -1,9 +1,12 @@
+from typing import List
+
 import pygame as pg
 
 from settings import BLACK, WHITE, BLUE, world_width
-from utils import open_file
 from app_core import States
 from states.menu.core import MenuCore
+from states.game.scores import ScoreRow, get_scores_results
+from utils import Point
 
 
 class MainMenu(States, MenuCore):
@@ -67,9 +70,11 @@ class Scores(States):
         States.__init__(self)
         self.next = "menu"
         self.FONT = pg.font.Font('freesansbold.ttf', 30)
-        self.users_scores = open_file("scores.csv")
+        self.board_of_scores: List[Scores] = []
 
     def startup(self):
+        headers = ScoreRow(nickname="NAME", points="POINTS", date="DATE")
+        self.board_of_scores = [headers] + get_scores_results()
         print("starting Game state stuff")
 
     def get_event(self, event):
@@ -78,31 +83,27 @@ class Scores(States):
         elif event.type == pg.MOUSEBUTTONDOWN:
             self.done = True
 
-    def create_scores_table_field(self, text, coordinates):
-        x, y = coordinates
-        date_surface = self.FONT.render(text, True, BLACK)
-        rect = date_surface.get_rect()
-        rect.topleft = (x, y)
-        return date_surface, rect
+    def create_scores_table_field(self, text, coordinates: Point, screen):
+        surface = self.FONT.render(text, True, BLACK)
+        rect = surface.get_rect()
+        rect.topleft = (coordinates.x, coordinates.y)
+        screen.blit(surface, rect)
 
     def update(self, screen, deltatime):
         self.draw(screen)
-        pg.draw.line(screen, BLUE, (0, 80), (world_width, 80), 5)
-        headers = ["NAME", "POINTS", "DATE"]
-        scores_table = [headers] + self.users_scores
         left_margin = 10
-        for index, row in enumerate(scores_table):
-            scores_surface, scores_rect = self.create_scores_table_field(
-                row[0], (10, left_margin + (index * 100)))
-            screen.blit(scores_surface, scores_rect)
-
-            date_surface, date_rect = self.create_scores_table_field(
-                row[1], (410, left_margin + (index * 100)))
-            screen.blit(date_surface, date_rect)
-
-            nickname_surface, nickname_rect = self.create_scores_table_field(
-                row[2], (550, left_margin + (index * 100)))
-            screen.blit(nickname_surface, nickname_rect)
+        x_first_column = 10
+        x_second_column = 410
+        x_third_column = 550
+        for index, row in enumerate(self.board_of_scores):
+            y_row = left_margin + index * 100
+            self.create_scores_table_field(
+                row.nickname, Point(x_first_column, y_row), screen)
+            self.create_scores_table_field(
+                row.points, Point(x_second_column, y_row), screen)
+            self.create_scores_table_field(
+                row.date, Point(x_third_column, y_row), screen)
 
     def draw(self, screen):
         screen.fill(WHITE)
+        pg.draw.line(screen, BLUE, (0, 80), (world_width, 80), 5)

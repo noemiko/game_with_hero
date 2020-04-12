@@ -1,11 +1,16 @@
 import os
-from typing import List, Tuple
+from typing import List, Tuple, NamedTuple
 import glob
 import csv
 
 from pygame import Surface
 from pygame import image
 from pygame import transform
+
+
+class Point(NamedTuple):
+    x: int
+    y: int
 
 
 def get_images(folder: str) -> List[Surface]:

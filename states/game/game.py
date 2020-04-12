@@ -9,7 +9,7 @@ from settings import BLACK
 from states.game.counter import Counter
 from settings import ground_position_y
 from app_core import States
-from utils import open_file, write_to_file
+from states.game.scores import save_new_scores, ScoreRow
 import globals
 
 """
@@ -49,11 +49,8 @@ class Game(States):
     def save_scores(self):
         user_points = self.duchshund.health + self.human.health + self.counter.count
         date = datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M")
-        user_scores = [globals.nickname, user_points, date]
-        users_scores = open_file("scores.csv")
-        new_table_scores = users_scores + [user_scores]
-        sorted_scores = sorted(new_table_scores, key=lambda x: int(x[1]), reverse=True)
-        write_to_file("scores.csv", sorted_scores)
+        score_row = ScoreRow(nickname=globals.nickname, points=user_points, date=date)
+        save_new_scores(score_row)
 
     def update(self, screen, deltatime):
         self.levels.update(screen, self.counter.count)
