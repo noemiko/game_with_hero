@@ -2,11 +2,15 @@ from typing import List
 
 import pygame as pg
 
-from settings import BLACK, WHITE, BLUE, world_width
-from app_core import States
-from states.menu.core import MenuCore
-from states.game.scores import ScoreRow, get_scores_results
-from utils import Point
+from duchshund_walking.app_core import States
+from duchshund_walking.settings import BLACK
+from duchshund_walking.settings import BLUE
+from duchshund_walking.settings import WHITE
+from duchshund_walking.settings import WORLD_WIDTH
+from duchshund_walking.states.game.scores import ScoreRow
+from duchshund_walking.states.game.scores import get_scores_results
+from duchshund_walking.states.menu.core import MenuCore
+from duchshund_walking.utils import Point
 
 
 class MainMenu(States, MenuCore):
@@ -15,9 +19,20 @@ class MainMenu(States, MenuCore):
         MenuCore.__init__(self)
         self.next = "game"
         self.options = [
-            "Play", "The best scores", "Choose heroes", "Options", "About author", "Quit"
+            "Play",
+            "The best scores",
+            "Choose heroes",
+            "Options",
+            "About author",
+            "Quit",
         ]
-        self.states_names_options = ["game", "scores", "todo", "options", "todo"]  # last option is by default quit
+        self.states_names_options = [
+            "game",
+            "scores",
+            "todo",
+            "options",
+            "todo",
+        ]  # last option is by default quit
         self.pre_render_options()
         self.from_bottom = 50
         self.spacer = 75
@@ -69,7 +84,7 @@ class Scores(States):
     def __init__(self):
         States.__init__(self)
         self.next = "menu"
-        self.FONT = pg.font.Font('freesansbold.ttf', 30)
+        self.FONT = pg.font.Font("freesansbold.ttf", 30)
         self.board_of_scores: List[Scores] = []
 
     def startup(self):
@@ -98,12 +113,15 @@ class Scores(States):
         for index, row in enumerate(self.board_of_scores):
             y_row = left_margin + index * 100
             self.create_scores_table_field(
-                row.nickname, Point(x_first_column, y_row), screen)
+                row.nickname, Point(x_first_column, y_row), screen
+            )
             self.create_scores_table_field(
-                row.points, Point(x_second_column, y_row), screen)
+                row.points, Point(x_second_column, y_row), screen
+            )
             self.create_scores_table_field(
-                row.date, Point(x_third_column, y_row), screen)
+                row.date, Point(x_third_column, y_row), screen
+            )
 
     def draw(self, screen):
         screen.fill(WHITE)
-        pg.draw.line(screen, BLUE, (0, 80), (world_width, 80), 5)
+        pg.draw.line(screen, BLUE, (0, 80), (WORLD_WIDTH, 80), 5)

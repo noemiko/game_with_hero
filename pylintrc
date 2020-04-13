@@ -1,0 +1,17 @@
+; -*- mode: conf-windows -*-
+
+[MASTER]
+init-hook='import sys; sys.path.append("./src")'
+
+[MESSAGES]
+disable=
+  no-member,
+  fixme,
+  missing-function-docstring,
+  missing-module-docstring,
+  missing-class-docstring,
+  too-many-instance-attributes,
+  global-statement
+
+[FORMAT]
+max-line-length = 120

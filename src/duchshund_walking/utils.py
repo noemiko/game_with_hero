@@ -1,11 +1,15 @@
-import os
-from typing import List, Tuple, NamedTuple
-import glob
 import csv
+import glob
+import os
+from typing import List
+from typing import NamedTuple
+from typing import Tuple
 
 from pygame import Surface
 from pygame import image
 from pygame import transform
+
+from duchshund_walking.settings import PROJECT_PATH
 
 
 class Point(NamedTuple):
@@ -22,7 +26,8 @@ def get_images(folder: str) -> List[Surface]:
     :return: List of surfaces
     """
     images = []
-    image_path = os.path.join(f'states/game/images', folder)
+    path_to_images = os.path.join(PROJECT_PATH, "states/game/images")
+    image_path = os.path.join(path_to_images, folder)
     all_images = glob.glob(f"{image_path}/*")
     sorted_images = sorted(all_images)
     for image_ in sorted_images:
@@ -40,26 +45,23 @@ def scale_images(images: List[Surface], scala: Tuple) -> List[Surface]:
     :return:
     """
     scaled_images = []
-    for image in images:
-        scaled_image = transform.scale(image, scala)
+    for image_ in images:
+        scaled_image = transform.scale(image_, scala)
         scaled_images.append(scaled_image)
     return scaled_images
 
 
 def open_file(file_name):
-    path = os.path.join(f'./', file_name)
+    path = os.path.join(PROJECT_PATH, file_name)
     try:
-        with open(path, 'r') as file:
+        with open(path, "r") as file:
             return list(csv.reader(file))
     except FileNotFoundError:
         return []
 
 
 def write_to_file(file_name, rows):
-    path = os.path.join(f'./', file_name)
-    try:
-        with open(path, 'w') as file:
-            writer = csv.writer(file, delimiter=",")
-            writer.writerows(rows)
-    except FileNotFoundError:
-        return []
+    path = os.path.join(PROJECT_PATH, file_name)
+    with open(path, "w") as file:
+        writer = csv.writer(file, delimiter=",")
+        writer.writerows(rows)

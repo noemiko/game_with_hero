@@ -1,11 +1,11 @@
 import pygame as pg
-from settings import ground_position_y
-from utils import get_images
-from utils import scale_images
+
+from duchshund_walking.settings import GROUND_POSITION_Y
+from duchshund_walking.utils import get_images
+from duchshund_walking.utils import scale_images
 
 
 class Player(pg.sprite.Sprite):
-
     def __init__(self, x, y):
         pg.sprite.Sprite.__init__(self)
         self.images_frames = self.load_images()
@@ -20,6 +20,8 @@ class Player(pg.sprite.Sprite):
         self.jump_heigh = 150
         self.ground_level = 250
 
+    def load_images(self):
+        pass
 
     def is_on_the_ground(self):
         if self.rect.y >= self.ground_level:
@@ -43,11 +45,10 @@ class Player(pg.sprite.Sprite):
 
 
 class Duchshund(Player):
-
     def __init__(self, x, y):
         Player.__init__(self, x, y)
         self.jump_heigh = 250
-        self.ground_level = ground_position_y
+        self.ground_level = GROUND_POSITION_Y
 
     def load_images(self):
         images = get_images("duchshund")

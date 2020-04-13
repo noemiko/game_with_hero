@@ -1,10 +1,13 @@
 import pygame as pg
 
-from messages import message_display
-from app_core import States
-from settings import WHITE
-from settings import world_width, world_heigh, BLACK, nickname_max_length
-import globals
+from duchshund_walking import globals
+from duchshund_walking.app_core import States
+from duchshund_walking.messages import message_display
+from duchshund_walking.settings import NICKNAME_MAX_LENGTH
+from duchshund_walking.settings import WHITE
+from duchshund_walking.settings import WORLD_HEIGH
+from duchshund_walking.settings import WORLD_WIDTH
+
 
 """
 Main loop
@@ -15,9 +18,9 @@ class NameInput(States):
     def __init__(self):
         States.__init__(self)
         self.next = "menu"
-        self.color = pg.Color('black')
-        self.FONT = pg.font.Font('freesansbold.ttf', 30)
-        self.rect = pg.Rect(world_width / 2 - 250, world_heigh / 2, 50, 50)
+        self.color = pg.Color("black")
+        self.FONT = pg.font.Font("freesansbold.ttf", 30)
+        self.rect = pg.Rect(WORLD_WIDTH / 2 - 250, WORLD_HEIGH / 2, 50, 50)
         self.text = ""
         self.txt_surface = self.FONT.render(self.text, True, self.color)
 
@@ -38,7 +41,7 @@ class NameInput(States):
             elif event.key == pg.K_BACKSPACE:
                 self.text = self.text[:-1]
             else:
-                if len(self.text) != nickname_max_length:
+                if len(self.text) != NICKNAME_MAX_LENGTH:
                     self.text += event.unicode
 
     def update(self, screen, deltatime):
@@ -53,7 +56,7 @@ class NameInput(States):
         screen.blit(self.txt_surface, (self.rect.x + 5, self.rect.y + 5))
         text_surface = self.FONT.render("Input your nickname", True, self.color)
         rect = text_surface.get_rect()
-        rect.center = (world_width / 2 - 50, world_heigh / 2 - 50)
+        rect.center = (WORLD_WIDTH / 2 - 50, WORLD_HEIGH / 2 - 50)
         screen.blit(text_surface, rect)
         pg.draw.rect(screen, self.color, self.rect, 2)
 
@@ -67,7 +70,7 @@ class WorkInProgress(States):
         self.next = "menu"
 
     def startup(self):
-        print("starting Game state stuff")
+        print("starting WIP state stuff")
 
     def get_event(self, event):
         if event.type == pg.KEYDOWN:

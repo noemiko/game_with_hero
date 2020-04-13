@@ -1,7 +1,7 @@
-from utils import get_images
+from duchshund_walking.utils import get_images
 
 
-class Background():
+class Background:
     def __init__(self):
         self.backgroundImg = get_images("backgrounds")
         self.current = self.backgroundImg[0]
@@ -19,7 +19,7 @@ class Background():
         self.rectBg = self.current.get_rect()
         self.width = self.rectBg.width
 
-    def update(self, ):
+    def update(self,):
         self.x += self.dx
         if self.x <= -self.width:
             self.x = self.width

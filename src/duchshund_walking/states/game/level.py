@@ -1,8 +1,12 @@
 from random import randint
 from typing import NamedTuple
 
-from states.game.background import Background
-from states.game.obstacles import Cactus, Obstacle, Flower, Windmill, Stone
+from duchshund_walking.states.game.background import Background
+from duchshund_walking.states.game.obstacles import Cactus
+from duchshund_walking.states.game.obstacles import Flower
+from duchshund_walking.states.game.obstacles import Obstacle
+from duchshund_walking.states.game.obstacles import Stone
+from duchshund_walking.states.game.obstacles import Windmill
 
 
 class LevelDetails(NamedTuple):
@@ -10,13 +14,13 @@ class LevelDetails(NamedTuple):
     background_index: int
 
 
-class Levels():
+class Levels:
     WORLDS = [
         LevelDetails(obstacle=Cactus, background_index=0),
         LevelDetails(obstacle=Flower, background_index=1),
         LevelDetails(obstacle=Stone, background_index=2),
         LevelDetails(obstacle=Windmill, background_index=3),
-        LevelDetails(obstacle=Windmill, background_index=4)
+        LevelDetails(obstacle=Windmill, background_index=4),
     ]
 
     def __init__(self):
@@ -26,10 +30,12 @@ class Levels():
 
     def update(self, display_surface, game_duration: int):
 
-        display_surface.blit(self.background.current,
-                             (self.background.x, self.background.y))
-        display_surface.blit(self.background.current,
-                             (self.background.next_x, self.background.y))
+        display_surface.blit(
+            self.background.current, (self.background.x, self.background.y)
+        )
+        display_surface.blit(
+            self.background.current, (self.background.next_x, self.background.y)
+        )
 
         self.background.update()
         if game_duration == 15:
