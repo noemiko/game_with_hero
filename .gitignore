@@ -3,6 +3,10 @@ venv3/
 venv3.8/
 # Byte-compiled / optimized / DLL files
 __pycache__/
-
+*.pyc
 # Pycharm
 .idea/
+
+# cache
+.mypy_cache/
+.pytest_cache/

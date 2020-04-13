@@ -1,16 +1,20 @@
-from datetime import timezone, datetime
+from datetime import datetime
+from datetime import timezone
+
 import pygame as pg
 
-from states.game.player import Duchshund, Human
-from states.game.level import Levels
-from messages import message_display
+from duchshund_walking import globals
+from duchshund_walking.app_core import States
+from duchshund_walking.messages import message_display
+from duchshund_walking.settings import BLACK
+from duchshund_walking.settings import GROUND_POSITION_Y
+from duchshund_walking.states.game.counter import Counter
+from duchshund_walking.states.game.level import Levels
+from duchshund_walking.states.game.player import Duchshund
+from duchshund_walking.states.game.player import Human
+from duchshund_walking.states.game.scores import ScoreRow
+from duchshund_walking.states.game.scores import save_new_scores
 
-from settings import BLACK
-from states.game.counter import Counter
-from settings import ground_position_y
-from app_core import States
-from states.game.scores import save_new_scores, ScoreRow
-import globals
 
 """
 Main loop
@@ -24,7 +28,7 @@ class Game(States):
 
     def startup(self):
         print("starting Game state stuff")
-        self.duchshund = Duchshund(0, ground_position_y)  # spawn player
+        self.duchshund = Duchshund(0, GROUND_POSITION_Y)  # spawn player
         self.human = Human(250, 250)
         self.players_list = pg.sprite.Group()
         self.players_list.add([self.duchshund, self.human])

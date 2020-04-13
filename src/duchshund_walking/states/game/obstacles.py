@@ -1,10 +1,10 @@
+from abc import abstractmethod
 from random import randint
 
 import pygame
 
-from abc import abstractmethod
-from utils import get_images
-from utils import scale_images
+from duchshund_walking.utils import get_images
+from duchshund_walking.utils import scale_images
 
 
 class Obstacle(pygame.sprite.Sprite):
@@ -58,7 +58,6 @@ class Flower(Obstacle):
 
 
 class Windmill(Obstacle):
-
     @property
     def images_folder(self):
         return "obstacles/windmills"

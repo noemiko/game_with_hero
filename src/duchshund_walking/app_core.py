@@ -1,19 +1,22 @@
-import pygame as pg
-from abc import abstractmethod, ABC
+from abc import ABC
+from abc import abstractmethod
 
-from settings import world_width, world_heigh
-from settings import fps
+import pygame as pg
+
+from duchshund_walking.settings import FPS
+from duchshund_walking.settings import WORLD_HEIGH
+from duchshund_walking.settings import WORLD_WIDTH
 
 
 class States(ABC):
     def __init__(self):
-        self.screen = pg.display.set_mode((world_width, world_heigh))
+        self.screen = pg.display.set_mode((WORLD_WIDTH, WORLD_HEIGH))
         self.screen_rect = self.screen.get_rect()
 
-        self.done = False
-        self.next = None
-        self.quit = False
-        self.previous = None
+        self.done: bool = False
+        self.next: str = ""
+        self.quit: bool = False
+        self.previous: str = ""
 
     @abstractmethod
     def startup(self):
@@ -31,17 +34,22 @@ class States(ABC):
 class AppStateMachine:
     def __init__(self):
         self.done = False
-        self.fps = fps
-        self.screen = pg.display.set_mode((world_width, world_heigh))
+        self.fps = FPS
+        self.screen = pg.display.set_mode((WORLD_WIDTH, WORLD_HEIGH))
         self.screen_rect = self.screen.get_rect()
         self.clock = pg.time.Clock()
+        self.state_dict: dict = {}
+        self.state_name: str = ""
+        self.state: States
 
     def setup_states(self, state_dict, start_state):
         """
         Define all available states in the system.
 
-        :param state_dict: dictionary with name of the state and instance of it {str: State}
-        :param start_state: name of the first used state from state_dict
+        :param state_dict: dictionary with name
+         of the state and instance of it {str: State}
+        :param start_state: name of the first
+         used state from state_dict
         """
         self.state_dict = state_dict
         self.state_name = start_state

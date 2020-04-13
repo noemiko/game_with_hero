@@ -1,6 +1,8 @@
 import pygame as pg
 
-from settings import BLACK, WHITE, BLUE
+from duchshund_walking.settings import BLACK
+from duchshund_walking.settings import BLUE
+from duchshund_walking.settings import WHITE
 
 
 class MenuCore:
@@ -15,7 +17,10 @@ class MenuCore:
     def draw_menu(self, screen):
         """handle drawing of the menu options"""
         for i, opt in enumerate(self.rendered["deselected"]):
-            opt[1].center = (self.screen_rect.centerx, self.from_bottom + i * self.spacer)
+            opt[1].center = (
+                self.screen_rect.centerx,
+                self.from_bottom + i * self.spacer,
+            )
             if i == self.selected_index:
                 rend_img, rend_rect = self.rendered["selected"][i]
                 rend_rect.center = opt[1].center

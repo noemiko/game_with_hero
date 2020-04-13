@@ -1,0 +1,30 @@
+[[source]]
+name = "pypi"
+url = "https://pypi.org/simple"
+verify_ssl = true
+
+[requires]
+python_version = "3.8"
+
+[packages]
+pygame="==2.0.0.dev6"
+
+
+[dev-packages]
+pytest = "*"
+black = "==19.10b0"
+flake8 = "*"
+isort= "*"
+pylint = "*"
+mypy = "==0.770"
+
+[scripts]
+isort = "isort"
+lint = "bash -c 'pipenv run flake && pipenv run pylint && pipenv run mypy'"
+flake = "flake8 --ignore=E999 --count -v "
+pylint = "pylint src"
+mypy = "mypy ."
+format = "black ./src"
+black_check = "black ./src --check --diff "
+app = "python3 src/run.py"
+pytest = "pytest ./src/tests"
