@@ -1,8 +1,28 @@
+---
 repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v2.4.0
+    hooks:
+      - id: check-added-large-files
+      - id: check-case-conflict
+      - id: check-merge-conflict
+      - id: end-of-file-fixer
+      - id: flake8
+      - id: pretty-format-json
+      - id: trailing-whitespace
   - repo: local
     hooks:
-    - id: isort
-      stages: [commit]
-      name: isort_format
-      entry: pipenv run isort
-      language: system
+      - id: isort
+        stages: [commit]
+        name: isort_format
+        entry: pipenv run isort
+        language: system
+  - repo: https://github.com/python/black
+    rev: 19.10b0
+    hooks:
+      - id: black
+        stages: [commit]
+        name: black_check
+        entry: black ./src check
+        language_version: python3.8
+        language: system
