@@ -17,12 +17,8 @@ repos:
         name: isort_format
         entry: pipenv run isort
         language: system
-  - repo: https://github.com/python/black
-    rev: 19.10b0
+  - repo: https://github.com/psf/black
+    rev: stable
     hooks:
       - id: black
-        stages: [commit]
-        name: black_check
-        entry: black ./src check --diff
         language_version: python3.8
-        language: system
