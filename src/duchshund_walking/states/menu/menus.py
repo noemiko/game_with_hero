@@ -112,15 +112,9 @@ class Scores(States):
         x_third_column = 550
         for index, row in enumerate(self.board_of_scores):
             y_row = left_margin + index * 100
-            self.create_scores_table_field(
-                row.nickname, Point(x_first_column, y_row), screen
-            )
-            self.create_scores_table_field(
-                row.points, Point(x_second_column, y_row), screen
-            )
-            self.create_scores_table_field(
-                row.date, Point(x_third_column, y_row), screen
-            )
+            self.create_scores_table_field(row.nickname, Point(x_first_column, y_row), screen)
+            self.create_scores_table_field(row.points, Point(x_second_column, y_row), screen)
+            self.create_scores_table_field(row.date, Point(x_third_column, y_row), screen)
 
     def draw(self, screen):
         screen.fill(WHITE)

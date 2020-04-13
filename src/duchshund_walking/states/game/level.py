@@ -30,12 +30,8 @@ class Levels:
 
     def update(self, display_surface, game_duration: int):
 
-        display_surface.blit(
-            self.background.current, (self.background.x, self.background.y)
-        )
-        display_surface.blit(
-            self.background.current, (self.background.next_x, self.background.y)
-        )
+        display_surface.blit(self.background.current, (self.background.x, self.background.y))
+        display_surface.blit(self.background.current, (self.background.next_x, self.background.y))
 
         self.background.update()
         if game_duration == 15:

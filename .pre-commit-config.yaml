@@ -1,15 +1,8 @@
-default_language_version:
-  python: python3.8
 repos:
   - repo: local
     hooks:
     - id: isort
-      stages: [commit,push]
-      name: isort
+      stages: [commit]
+      name: isort_format
       entry: pipenv run isort
       language: system
-#  - repo: https://github.com/ambv/black
-#    rev: stable
-#    hooks:
-#    - id: black
-#      language_version: python3.8

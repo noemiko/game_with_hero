@@ -90,9 +90,7 @@ class Game(States):
         screen.blit(self.counter.counterText, (730, 10))
         font = pg.font.Font("freesansbold.ttf", 22)
 
-        dog_health = font.render(
-            f"duchshund health {self.duchshund.health}", True, BLACK
-        )
+        dog_health = font.render(f"duchshund health {self.duchshund.health}", True, BLACK)
         human_health = font.render(f"human health {self.human.health}", True, BLACK)
 
         screen.blit(dog_health, (10, 10))
