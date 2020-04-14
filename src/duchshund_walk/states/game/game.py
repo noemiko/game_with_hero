@@ -2,18 +2,17 @@ from datetime import datetime
 from datetime import timezone
 
 import pygame as pg
-
-from duchshund_walking import globals
-from duchshund_walking.app_core import States
-from duchshund_walking.messages import message_display
-from duchshund_walking.settings import BLACK
-from duchshund_walking.settings import GROUND_POSITION_Y
-from duchshund_walking.states.game.counter import Counter
-from duchshund_walking.states.game.level import Levels
-from duchshund_walking.states.game.player import Duchshund
-from duchshund_walking.states.game.player import Human
-from duchshund_walking.states.game.scores import ScoreRow
-from duchshund_walking.states.game.scores import save_new_scores
+from duchshund_walk import globals
+from duchshund_walk.app_core import States
+from duchshund_walk.messages import message_display
+from duchshund_walk.settings import BLACK
+from duchshund_walk.settings import GROUND_POSITION_Y
+from duchshund_walk.states.game.counter import Counter
+from duchshund_walk.states.game.level import Levels
+from duchshund_walk.states.game.player import Duchshund
+from duchshund_walk.states.game.player import Human
+from duchshund_walk.states.game.scores import ScoreRow
+from duchshund_walk.states.game.scores import save_new_scores
 
 
 """

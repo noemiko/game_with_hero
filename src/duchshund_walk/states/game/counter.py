@@ -1,6 +1,5 @@
 import pygame
-
-from duchshund_walking.settings import BLACK
+from duchshund_walk.settings import BLACK
 
 
 class Counter:

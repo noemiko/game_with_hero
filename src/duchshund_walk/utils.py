@@ -5,11 +5,10 @@ from typing import List
 from typing import NamedTuple
 from typing import Tuple
 
+from duchshund_walk.settings import PROJECT_PATH
 from pygame import Surface
 from pygame import image
 from pygame import transform
-
-from duchshund_walking.settings import PROJECT_PATH
 
 
 class Point(NamedTuple):

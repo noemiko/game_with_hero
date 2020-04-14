@@ -1,4 +1,4 @@
-from duchshund_walking.utils import get_images
+from duchshund_walk.utils import get_images
 
 
 class Background:

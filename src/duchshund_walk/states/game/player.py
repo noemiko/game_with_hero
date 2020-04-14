@@ -1,8 +1,7 @@
 import pygame as pg
-
-from duchshund_walking.settings import GROUND_POSITION_Y
-from duchshund_walking.utils import get_images
-from duchshund_walking.utils import scale_images
+from duchshund_walk.settings import GROUND_POSITION_Y
+from duchshund_walk.utils import get_images
+from duchshund_walk.utils import scale_images
 
 
 class Player(pg.sprite.Sprite):

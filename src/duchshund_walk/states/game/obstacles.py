@@ -2,9 +2,8 @@ from abc import abstractmethod
 from random import randint
 
 import pygame
-
-from duchshund_walking.utils import get_images
-from duchshund_walking.utils import scale_images
+from duchshund_walk.utils import get_images
+from duchshund_walk.utils import scale_images
 
 
 class Obstacle(pygame.sprite.Sprite):

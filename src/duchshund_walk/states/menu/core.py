@@ -1,8 +1,7 @@
 import pygame as pg
-
-from duchshund_walking.settings import BLACK
-from duchshund_walking.settings import BLUE
-from duchshund_walking.settings import WHITE
+from duchshund_walk.settings import BLACK
+from duchshund_walk.settings import BLUE
+from duchshund_walk.settings import WHITE
 
 
 class MenuCore:

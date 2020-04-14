@@ -1,8 +1,7 @@
 import pygame as pg
-
-from duchshund_walking.settings import BLACK
-from duchshund_walking.settings import WORLD_HEIGH
-from duchshund_walking.settings import WORLD_WIDTH
+from duchshund_walk.settings import BLACK
+from duchshund_walk.settings import WORLD_HEIGH
+from duchshund_walk.settings import WORLD_WIDTH
 
 
 def text_objects(text, font):

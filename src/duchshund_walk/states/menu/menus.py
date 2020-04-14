@@ -1,16 +1,15 @@
 from typing import List
 
 import pygame as pg
-
-from duchshund_walking.app_core import States
-from duchshund_walking.settings import BLACK
-from duchshund_walking.settings import BLUE
-from duchshund_walking.settings import WHITE
-from duchshund_walking.settings import WORLD_WIDTH
-from duchshund_walking.states.game.scores import ScoreRow
-from duchshund_walking.states.game.scores import get_scores_results
-from duchshund_walking.states.menu.core import MenuCore
-from duchshund_walking.utils import Point
+from duchshund_walk.app_core import States
+from duchshund_walk.settings import BLACK
+from duchshund_walk.settings import BLUE
+from duchshund_walk.settings import WHITE
+from duchshund_walk.settings import WORLD_WIDTH
+from duchshund_walk.states.game.scores import ScoreRow
+from duchshund_walk.states.game.scores import get_scores_results
+from duchshund_walk.states.menu.core import MenuCore
+from duchshund_walk.utils import Point
 
 
 class MainMenu(States, MenuCore):

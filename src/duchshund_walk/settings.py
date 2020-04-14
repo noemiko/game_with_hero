@@ -12,4 +12,4 @@ BLACK = (23, 23, 23)
 WHITE = (254, 254, 254)
 ALPHA = (0, 255, 0)
 
-PROJECT_PATH = "./src/duchshund_walking/"
+PROJECT_PATH = "./src/duchshund_walk/"

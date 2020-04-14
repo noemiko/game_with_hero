@@ -1,12 +1,12 @@
 from random import randint
 from typing import NamedTuple
 
-from duchshund_walking.states.game.background import Background
-from duchshund_walking.states.game.obstacles import Cactus
-from duchshund_walking.states.game.obstacles import Flower
-from duchshund_walking.states.game.obstacles import Obstacle
-from duchshund_walking.states.game.obstacles import Stone
-from duchshund_walking.states.game.obstacles import Windmill
+from duchshund_walk.states.game.background import Background
+from duchshund_walk.states.game.obstacles import Cactus
+from duchshund_walk.states.game.obstacles import Flower
+from duchshund_walk.states.game.obstacles import Obstacle
+from duchshund_walk.states.game.obstacles import Stone
+from duchshund_walk.states.game.obstacles import Windmill
 
 
 class LevelDetails(NamedTuple):

@@ -1,7 +1,7 @@
 from typing import NamedTuple
 
-from duchshund_walking.utils import open_file
-from duchshund_walking.utils import write_to_file
+from duchshund_walk.utils import open_file
+from duchshund_walk.utils import write_to_file
 
 
 class ScoreRow(NamedTuple):

@@ -2,10 +2,9 @@ from abc import ABC
 from abc import abstractmethod
 
 import pygame as pg
-
-from duchshund_walking.settings import FPS
-from duchshund_walking.settings import WORLD_HEIGH
-from duchshund_walking.settings import WORLD_WIDTH
+from duchshund_walk.settings import FPS
+from duchshund_walk.settings import WORLD_HEIGH
+from duchshund_walk.settings import WORLD_WIDTH
 
 
 class States(ABC):

@@ -1,12 +1,11 @@
 import pygame as pg
-
-from duchshund_walking import globals
-from duchshund_walking.app_core import States
-from duchshund_walking.messages import message_display
-from duchshund_walking.settings import NICKNAME_MAX_LENGTH
-from duchshund_walking.settings import WHITE
-from duchshund_walking.settings import WORLD_HEIGH
-from duchshund_walking.settings import WORLD_WIDTH
+from duchshund_walk import globals
+from duchshund_walk.app_core import States
+from duchshund_walk.messages import message_display
+from duchshund_walk.settings import NICKNAME_MAX_LENGTH
+from duchshund_walk.settings import WHITE
+from duchshund_walk.settings import WORLD_HEIGH
+from duchshund_walk.settings import WORLD_WIDTH
 
 
 """
