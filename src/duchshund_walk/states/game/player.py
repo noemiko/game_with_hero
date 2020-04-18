@@ -50,7 +50,7 @@ class Duchshund(Player):
         self.ground_level = GROUND_POSITION_Y
 
     def load_images(self):
-        images = get_images("duchshund")
+        images = get_images("duchshund/standard")
         return scale_images(images, (100, 50))
 
     def jump(self):
@@ -68,7 +68,7 @@ class Duchshund(Player):
         Update sprite position
         """
 
-        slowdown = 300.0
+        slowdown = 3000.0
         player_speed = game_deltatime / slowdown
         if self.is_on_the_top():
             self.movey += 100
@@ -76,7 +76,7 @@ class Duchshund(Player):
 
         if self.is_on_the_ground() and not self.is_jumping:
             self.movey = 0
-            self.rect.y = 350
+            self.rect.y = self.ground_level
 
         self.rect.y += self.movey * player_speed
         self.rect.topleft = self.rect.x, self.rect.y
