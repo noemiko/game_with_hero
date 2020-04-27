@@ -28,7 +28,7 @@ class MainMenu(States, MenuCore):
         self.states_names_options = [
             "game",
             "scores",
-            "todo",
+            "picker_room",
             "options",
             "todo",
         ]  # last option is by default quit

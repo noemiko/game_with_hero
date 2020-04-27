@@ -5,9 +5,9 @@ from duchshund_walk.utils import scale_images
 
 
 class Player(pg.sprite.Sprite):
-    def __init__(self, x, y):
+    def __init__(self, x, y, images_path):
         pg.sprite.Sprite.__init__(self)
-        self.images_frames = self.load_images()
+        self.images_frames = self.load_images(images_path)
         self.image = self.images_frames[0]
         self.rect = self.image.get_rect()
         self.frame = 0
@@ -19,7 +19,7 @@ class Player(pg.sprite.Sprite):
         self.jump_heigh = 150
         self.ground_level = 250
 
-    def load_images(self):
+    def load_images(self, images_path):
         pass
 
     def is_on_the_ground(self):
@@ -44,13 +44,13 @@ class Player(pg.sprite.Sprite):
 
 
 class Duchshund(Player):
-    def __init__(self, x, y):
-        Player.__init__(self, x, y)
+    def __init__(self, x, y, images_path):
+        Player.__init__(self, x, y, images_path)
         self.jump_heigh = 250
         self.ground_level = GROUND_POSITION_Y
 
-    def load_images(self):
-        images = get_images("duchshund/standard")
+    def load_images(self, images_path):
+        images = get_images(images_path)
         return scale_images(images, (100, 50))
 
     def jump(self):
@@ -93,9 +93,10 @@ class Duchshund(Player):
 
 
 class Human(Player):
-    def load_images(self):
-        images = get_images("human")
-        return scale_images(images, (100, 150))
+    def load_images(self, images_path):
+        images = get_images(images_path)
+        return scale_images(images, (150, 200))
+        # return scale_images(images, (100, 150))
 
     def get_event(self, event):
         if event.type == pg.KEYDOWN:

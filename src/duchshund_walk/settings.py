@@ -12,4 +12,6 @@ BLACK = (23, 23, 23)
 WHITE = (254, 254, 254)
 ALPHA = (0, 255, 0)
 
+DEFAULT_GAME_CONFIG = {"duchshund": "duchshund/with_red_bow", "human": "human/default"}
+
 PROJECT_PATH = "./src/duchshund_walk/"
