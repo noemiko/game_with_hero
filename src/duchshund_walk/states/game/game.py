@@ -13,6 +13,7 @@ from duchshund_walk.states.game.player import Duchshund
 from duchshund_walk.states.game.player import Human
 from duchshund_walk.states.game.scores import ScoreRow
 from duchshund_walk.states.game.scores import save_new_scores
+from duchshund_walk.utils import get_game_config
 
 
 """
@@ -24,6 +25,7 @@ class Game(States):
     def __init__(self):
         States.__init__(self)
         self.next = "menu"
+        self.config = get_game_config()
 
     def startup(self):
         print("starting Game state stuff")

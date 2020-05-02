@@ -1,5 +1,7 @@
 import pygame as pg
 from duchshund_walk.settings import GROUND_POSITION_Y
+from duchshund_walk.utils import get_dog_image_folder
+from duchshund_walk.utils import get_human_image_folder
 from duchshund_walk.utils import get_images
 from duchshund_walk.utils import scale_images
 
@@ -50,7 +52,8 @@ class Duchshund(Player):
         self.ground_level = GROUND_POSITION_Y
 
     def load_images(self):
-        images = get_images("duchshund")
+        images_folder = get_dog_image_folder()
+        images = get_images(images_folder)
         return scale_images(images, (100, 50))
 
     def jump(self):
@@ -76,7 +79,7 @@ class Duchshund(Player):
 
         if self.is_on_the_ground() and not self.is_jumping:
             self.movey = 0
-            self.rect.y = 350
+            self.rect.y = self.ground_level
 
         self.rect.y += self.movey * player_speed
         self.rect.topleft = self.rect.x, self.rect.y
@@ -93,9 +96,16 @@ class Duchshund(Player):
 
 
 class Human(Player):
+    def __init__(self, x, y):
+        Player.__init__(self, x, y)
+        # self.jump_heigh = 250
+        self.ground_level = 250
+
     def load_images(self):
-        images = get_images("human")
-        return scale_images(images, (100, 150))
+        folder = get_human_image_folder()
+        images = get_images(folder)
+        return scale_images(images, (150, 200))
+        # return scale_images(images, (100, 150))
 
     def get_event(self, event):
         if event.type == pg.KEYDOWN:
@@ -103,17 +113,20 @@ class Human(Player):
                 self.jump()
 
     def update(self, game_deltatime):
-        slowdown = 300.0
-        player_speed = game_deltatime / slowdown
-        self.rect.y += self.movey * player_speed
+        if self.is_jumping:
+            slowdown = 300.0
+            player_speed = game_deltatime / slowdown
+            self.rect.y += self.movey * player_speed
 
         if self.is_on_the_top():
             self.movey += 100
+
+        if self.is_on_the_ground():
             self.is_jumping = False
 
         if self.is_on_the_ground() and not self.is_jumping:
             self.movey = 0
-            self.rect.y = 250
+            self.rect.y = self.ground_level
 
         if self.is_jumping or self.is_during_jump():
             self.image = self.images_frames[2]
