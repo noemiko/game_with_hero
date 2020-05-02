@@ -29,10 +29,8 @@ class Game(States):
 
     def startup(self):
         print("starting Game state stuff")
-        dog_images_path = self.config["duchshund"]
-        human_images_path = self.config["human"]
-        self.duchshund = Duchshund(0, GROUND_POSITION_Y, dog_images_path)  # spawn player
-        self.human = Human(250, 250, human_images_path)
+        self.duchshund = Duchshund(0, GROUND_POSITION_Y)  # spawn player
+        self.human = Human(250, 250)
         self.players_list = pg.sprite.Group()
         self.players_list.add([self.duchshund, self.human])
 
@@ -62,12 +60,12 @@ class Game(States):
     def update(self, screen, deltatime):
         self.levels.update(screen, self.counter.count)
         self.handle_collision()
-        # if self.duchshund.health < 90 or self.human.health < 0:
-        #     self.show_fail_message(screen)
-        #     return
-        # elif self.levels.is_all_passed():
-        #     self.show_winning_message(screen)
-        #     return
+        if self.duchshund.health < 90 or self.human.health < 0:
+            self.show_fail_message(screen)
+            return
+        elif self.levels.is_all_passed():
+            self.show_winning_message(screen)
+            return
         new_obstacles = self.levels.get_obstacles()
         if new_obstacles:
             self.obstacles.add(new_obstacles)
