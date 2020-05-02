@@ -152,8 +152,8 @@ def override_game_config(new_config):
     print("overriding config")
     try:
         config = open_json_file("config.json")
-    except FileNotFoundError:
-        config = DEFAULT_GAME_CONFIG
+    except FileNotFoundError as e:
+        raise FileNotFoundError(f"Missing config file: {e}")
     updated_config = {**config, **new_config}
     try:
         validate_config(updated_config)
@@ -174,6 +174,8 @@ def open_json_file(file_name):
 
 def write_to_file(file_name, rows):
     path = os.path.join(PROJECT_PATH, file_name)
+    if not os.path.exists(path):
+        raise FileExistsError(f"Missing config file in: {path}")
     with open(path, "w") as file:
         writer = csv.writer(file, delimiter=",")
         writer.writerows(rows)
