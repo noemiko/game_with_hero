@@ -36,8 +36,6 @@ class Player(pg.sprite.Sprite):
         self.movey = 0
         self.is_jumping = False
         self.health = 100
-        # self.jump_heigh = 150
-        # self.ground_level = 250
 
     def load_images(self):
         pass
@@ -138,7 +136,6 @@ class Human(Player):
         folder = get_human_image_folder()
         images = get_images(folder)
         return scale_images(images, (150, 200))
-        # return scale_images(images, (100, 150))
 
     def get_event(self, event):
         if event.key == ord("w"):
