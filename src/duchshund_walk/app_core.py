@@ -52,13 +52,13 @@ class AppStateMachine:
         """
         self.state_dict = state_dict
         self.state_name = start_state
-        self.state = self.state_dict[self.state_name]
+        self.state = self.state_dict[self.state_name]()
 
     def flip_state(self):
         self.state.done = False
         # get next state to setup
         previous, self.state_name = self.state_name, self.state.next
-        self.state = self.state_dict[self.state_name]
+        self.state = self.state_dict[self.state_name]()
         self.state.startup()
         self.state.previous = previous
 

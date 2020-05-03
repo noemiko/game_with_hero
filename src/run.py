@@ -16,13 +16,13 @@ if __name__ == "__main__":
     init_globals()
     APP = AppStateMachine()
     STATE_DICT = {
-        "picker_room": HeroesPicker(),
-        "nickname": NameInput(),
-        "menu": MainMenu(),
-        "game": Game(),
-        "todo": WorkInProgress(),
-        "options": Options(),
-        "scores": Scores(),
+        "picker_room": HeroesPicker,
+        "nickname": NameInput,
+        "menu": MainMenu,
+        "game": Game,
+        "todo": WorkInProgress,
+        "options": Options,
+        "scores": Scores,
     }
     APP.setup_states(STATE_DICT, "nickname")
     APP.main_game_loop()
