@@ -1,9 +1,27 @@
 import pygame as pg
+from duchshund_walk.settings import BLUE
 from duchshund_walk.settings import GROUND_POSITION_Y
 from duchshund_walk.utils import get_dog_image_folder
 from duchshund_walk.utils import get_human_image_folder
 from duchshund_walk.utils import get_images
 from duchshund_walk.utils import scale_images
+
+
+class Bullet(pg.sprite.Sprite):
+    def __init__(self, x, y):
+        pg.sprite.Sprite.__init__(self)
+        self.image = pg.Surface((25, 2))
+        self.image.fill(BLUE)
+        self.rect = self.image.get_rect()
+        self.rect.y = y
+        self.rect.x = x
+        self.speedy = +10
+
+    def update(self):
+        self.rect.x += self.speedy
+        # kill if it moves off the top of the screen
+        if self.rect.bottom < 0:
+            self.kill()
 
 
 class Player(pg.sprite.Sprite):
@@ -18,8 +36,8 @@ class Player(pg.sprite.Sprite):
         self.movey = 0
         self.is_jumping = False
         self.health = 100
-        self.jump_heigh = 150
-        self.ground_level = 250
+        # self.jump_heigh = 150
+        # self.ground_level = 250
 
     def load_images(self):
         pass
@@ -40,9 +58,7 @@ class Player(pg.sprite.Sprite):
         return False
 
     def jump(self):
-        if self.is_on_the_ground():
-            self.movey -= 100
-            self.is_jumping = True
+        pass
 
 
 class Duchshund(Player):
@@ -50,6 +66,11 @@ class Duchshund(Player):
         Player.__init__(self, x, y)
         self.jump_heigh = 250
         self.ground_level = GROUND_POSITION_Y
+        self.bullets = []
+
+    def shoot(self):
+        bullet = Bullet(self.rect.x + 80, self.rect.y + 25)
+        self.bullets.append(bullet)
 
     def load_images(self):
         images_folder = get_dog_image_folder()
@@ -62,9 +83,11 @@ class Duchshund(Player):
             self.is_jumping = True
 
     def get_event(self, event):
-        if event.type == pg.KEYDOWN:
-            if event.key == pg.K_SPACE:
-                self.jump()
+        if event.key == pg.K_SPACE:
+            self.jump()
+        elif event.key == pg.K_RSHIFT or event.key == pg.K_LSHIFT:
+            print("button `e` pressed")
+            self.shoot()
 
     def update(self, game_deltatime):
         """
@@ -94,12 +117,22 @@ class Duchshund(Player):
 
         self.image = self.images_frames[self.frame]
 
+    def __str__(self):
+        return "Duchshund"
+
 
 class Human(Player):
     def __init__(self, x, y):
         Player.__init__(self, x, y)
-        # self.jump_heigh = 250
-        self.ground_level = 250
+        self.jump_heigh = 100
+        self.ground_level = y
+
+        self.bullets = []
+
+    def jump(self):
+        if self.is_on_the_ground():
+            self.movey -= 100
+            self.is_jumping = True
 
     def load_images(self):
         folder = get_human_image_folder()
@@ -108,12 +141,20 @@ class Human(Player):
         # return scale_images(images, (100, 150))
 
     def get_event(self, event):
-        if event.type == pg.KEYDOWN:
-            if event.key == ord("w"):
-                self.jump()
+        if event.key == ord("w"):
+            print("button `w` pressed")
+            self.jump()
+        if event.key == ord("e"):
+            print("button `e` pressed")
+            self.shoot()
+
+    def shoot(self):
+        bullet = Bullet(self.rect.x + 110, self.rect.y + 25)
+        self.bullets.append(bullet)
 
     def update(self, game_deltatime):
         if self.is_jumping:
+            print("human is during jump")
             slowdown = 300.0
             player_speed = game_deltatime / slowdown
             self.rect.y += self.movey * player_speed
@@ -138,3 +179,6 @@ class Human(Player):
 
         self.image = self.images_frames[int(self.frame)]
         self.frame += 0.5
+
+    def __str__(self):
+        return "Human"

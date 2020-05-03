@@ -36,6 +36,24 @@ class Obstacle(pygame.sprite.Sprite):
         return self.images[rand]
 
 
+class Flying(Obstacle):
+    def __init__(self):
+        Obstacle.__init__(self)
+        self.rect = self.image.get_rect()
+        self.x = 800
+        self.y = 240
+        self.rect.move_ip(self.x, self.y)
+        self.dx = -15
+
+    @property
+    def images_folder(self):
+        return "obstacles/flying"
+
+    @property
+    def images_scale(self):
+        return (70, 50)
+
+
 class Cactus(Obstacle):
     @property
     def images_folder(self):

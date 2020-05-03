@@ -130,8 +130,8 @@ def set_new_dog_image_folder(folder_name):
 def get_human_image_folder():
     try:
         config = open_json_file("config.json")
-    except FileNotFoundError:
-        config = DEFAULT_GAME_CONFIG
+    except FileNotFoundError as e:
+        raise FileNotFoundError(f"Missing config file: {e}")
     return config["human"]
 
 
