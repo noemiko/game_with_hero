@@ -4,8 +4,8 @@ from duchshund_walk.settings import GROUND_POSITION_Y
 from duchshund_walk.utils import get_dog_image_folder
 from duchshund_walk.utils import get_human_image_folder
 from duchshund_walk.utils import get_images
+from duchshund_walk.utils import merge_images
 from duchshund_walk.utils import scale_images
-from PIL import Image
 
 EARTH_GRAVITATION = 8
 
@@ -87,15 +87,10 @@ class Duchshund(Player):
         folder = get_dog_image_folder()
         images = get_images(folder)
 
-        strFormat = "RGBA"
         images_with_helmet = []
         for current_image in images:
-            raw_str = pg.image.tostring(current_image, strFormat, False)
-            im1 = Image.frombytes(strFormat, current_image.get_size(), raw_str)
-            im2 = Image.open("src/duchshund_walk/states/game/images/cosmos/dachshund_cosmo.png")
-            new_image = Image.alpha_composite(im1, im2)
-            myImage = pg.image.fromstring(new_image.tobytes(), new_image.size, new_image.mode)
-            images_with_helmet.append(myImage)
+            new_image = merge_images(current_image, "src/duchshund_walk/states/game/images/cosmos/dachshund_cosmo.png")
+            images_with_helmet.append(new_image)
 
         images = scale_images(images_with_helmet, (100, 50))
         self.images_frames = images
@@ -163,15 +158,10 @@ class Human(Player):
         folder = get_human_image_folder()
         images = get_images(folder)
 
-        strFormat = "RGBA"
         images_with_helmet = []
         for current_image in images:
-            raw_str = pg.image.tostring(current_image, strFormat, False)
-            im1 = Image.frombytes(strFormat, current_image.get_size(), raw_str)
-            im2 = Image.open("src/duchshund_walk/states/game/images/cosmos/cosmo_helmet.png")
-            new_image = Image.alpha_composite(im1, im2)
-            myImage = pg.image.fromstring(new_image.tobytes(), new_image.size, new_image.mode)
-            images_with_helmet.append(myImage)
+            new_image = merge_images(current_image, "src/duchshund_walk/states/game/images/cosmos/cosmo_helmet.png")
+            images_with_helmet.append(new_image)
 
         images = scale_images(images_with_helmet, (150, 200))
         self.images_frames = images
