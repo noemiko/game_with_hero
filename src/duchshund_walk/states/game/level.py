@@ -19,7 +19,7 @@ class LevelDetails(NamedTuple):
 
 class Levels:
     WORLDS = [
-        LevelDetails(obstacles=[Cactus], background_index=1, respawn_max_tempo=70),
+        LevelDetails(obstacles=[Cactus], background_index=0, respawn_max_tempo=70),
         LevelDetails(obstacles=[Flower], background_index=1, respawn_max_tempo=70),
         LevelDetails(obstacles=[Stone], background_index=2, respawn_max_tempo=70),
         LevelDetails(obstacles=[Windmill], background_index=3, respawn_max_tempo=70),

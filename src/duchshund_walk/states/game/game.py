@@ -74,9 +74,9 @@ class Game(States):
         if self.levels.is_cosmos_level():
             self.human.cosmos_mode()
             self.duchshund.cosmos_mode()
-        # else:
-        #     self.human.earth_mode()
-        #     self.duchshund.earth_mode()
+        else:
+            self.human.earth_mode()
+            self.duchshund.earth_mode()
         new_obstacle = self.levels.get_obstacles()
         if new_obstacle:
             self.obstacles.add(new_obstacle)

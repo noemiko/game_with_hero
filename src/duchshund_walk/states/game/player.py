@@ -7,6 +7,8 @@ from duchshund_walk.utils import get_images
 from duchshund_walk.utils import scale_images
 from PIL import Image
 
+EARTH_GRAVITATION = 8
+
 
 class Bullet(pg.sprite.Sprite):
     def __init__(self, x, y):
@@ -37,7 +39,7 @@ class Player(pg.sprite.Sprite):
         self.movey = 0
         self.is_jumping = False
         self.health = 100
-        self.g = 10
+        self.g = EARTH_GRAVITATION
         self.jump_velocity = 0
 
     def load_images(self):
@@ -73,7 +75,7 @@ class Duchshund(Player):
         self.wear_cosmo_suit()
 
     def earth_mode(self):
-        self.g = 10
+        self.g = EARTH_GRAVITATION
         self.images_frames = self.load_images()
 
     def load_images(self):
@@ -154,7 +156,7 @@ class Human(Player):
         self.wear_cosmo_suit()
 
     def earth_mode(self):
-        self.g = 10
+        self.g = EARTH_GRAVITATION
         self.images_frames = self.load_images()
 
     def wear_cosmo_suit(self):
