@@ -24,7 +24,7 @@ if __name__ == "__main__":
         "options": Options,
         "scores": Scores,
     }
-    APP.setup_states(STATE_DICT, "nickname")
+    APP.setup_states(STATE_DICT, "menu")
     APP.main_game_loop()
     pg.quit()
     sys.exit()
