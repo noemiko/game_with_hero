@@ -11,6 +11,7 @@ from typing import Tuple
 from duchshund_walk.settings import DEFAULT_GAME_CONFIG
 from duchshund_walk.settings import GAME_IMAGES_PATH
 from duchshund_walk.settings import PROJECT_PATH
+from PIL import Image
 from pygame import Surface
 from pygame import image
 from pygame import transform
@@ -88,6 +89,15 @@ def scale_images(images: List[Surface], scala: Tuple) -> List[Surface]:
         scaled_image = transform.scale(image_, scala)
         scaled_images.append(scaled_image)
     return scaled_images
+
+
+def merge_images(current_image: image, second_img_path: str):
+    strFormat = "RGBA"
+    raw_str = image.tostring(current_image, strFormat, False)
+    im1 = Image.frombytes(strFormat, current_image.get_size(), raw_str)
+    im2 = Image.open(second_img_path)
+    new_image = Image.alpha_composite(im1, im2)
+    return image.fromstring(new_image.tobytes(), new_image.size, new_image.mode)
 
 
 def open_file(file_name: str):

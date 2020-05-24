@@ -4,7 +4,10 @@ from duchshund_walk.settings import GROUND_POSITION_Y
 from duchshund_walk.utils import get_dog_image_folder
 from duchshund_walk.utils import get_human_image_folder
 from duchshund_walk.utils import get_images
+from duchshund_walk.utils import merge_images
 from duchshund_walk.utils import scale_images
+
+EARTH_GRAVITATION = 8
 
 
 class Bullet(pg.sprite.Sprite):
@@ -36,6 +39,8 @@ class Player(pg.sprite.Sprite):
         self.movey = 0
         self.is_jumping = False
         self.health = 100
+        self.g = EARTH_GRAVITATION
+        self.jump_velocity = 0
 
     def load_images(self):
         pass
@@ -47,11 +52,6 @@ class Player(pg.sprite.Sprite):
 
     def is_on_the_top(self):
         if self.rect.y <= self.jump_heigh:
-            return True
-        return False
-
-    def is_during_jump(self):
-        if self.rect.y >= self.jump_heigh and self.rect.y < self.ground_level:
             return True
         return False
 
@@ -70,14 +70,35 @@ class Duchshund(Player):
         bullet = Bullet(self.rect.x + 80, self.rect.y + 25)
         self.bullets.append(bullet)
 
+    def cosmos_mode(self):
+        self.g = 5
+        self.wear_cosmo_suit()
+
+    def earth_mode(self):
+        self.g = EARTH_GRAVITATION
+        self.images_frames = self.load_images()
+
     def load_images(self):
         images_folder = get_dog_image_folder()
         images = get_images(images_folder)
         return scale_images(images, (100, 50))
 
+    def wear_cosmo_suit(self):
+        folder = get_dog_image_folder()
+        images = get_images(folder)
+
+        images_with_helmet = []
+        for current_image in images:
+            new_image = merge_images(current_image, "src/duchshund_walk/states/game/images/cosmos/dachshund_cosmo.png")
+            images_with_helmet.append(new_image)
+
+        images = scale_images(images_with_helmet, (100, 50))
+        self.images_frames = images
+
     def jump(self):
         if self.is_on_the_ground():
             self.movey -= 100
+            self.jump_velocity = 50
             self.is_jumping = True
 
     def get_event(self, event):
@@ -92,21 +113,20 @@ class Duchshund(Player):
         Update sprite position
         """
 
-        slowdown = 300.0
-        player_speed = game_deltatime / slowdown
-        if self.is_on_the_top():
-            self.movey += 100
+        if self.is_jumping:
+            print("dog is during jump")
+            self.rect.y -= self.jump_velocity
+            self.jump_velocity -= self.g
+
+        if self.is_on_the_ground():
+            self.jump_velocity = 0
+            self.rect.y = self.ground_level
             self.is_jumping = False
 
-        if self.is_on_the_ground() and not self.is_jumping:
-            self.movey = 0
-            self.rect.y = self.ground_level
-
-        self.rect.y += self.movey * player_speed
         self.rect.topleft = self.rect.x, self.rect.y
 
         self.frame += 1
-        if self.is_jumping or self.is_during_jump():
+        if self.is_jumping:
             self.frame = 0
             self.image = self.images_frames[4]
             return
@@ -124,11 +144,31 @@ class Human(Player):
         Player.__init__(self, x, y)
         self.jump_heigh = 100
         self.ground_level = y
-
         self.bullets = []
+
+    def cosmos_mode(self):
+        self.g = 6
+        self.wear_cosmo_suit()
+
+    def earth_mode(self):
+        self.g = EARTH_GRAVITATION
+        self.images_frames = self.load_images()
+
+    def wear_cosmo_suit(self):
+        folder = get_human_image_folder()
+        images = get_images(folder)
+
+        images_with_helmet = []
+        for current_image in images:
+            new_image = merge_images(current_image, "src/duchshund_walk/states/game/images/cosmos/cosmo_helmet.png")
+            images_with_helmet.append(new_image)
+
+        images = scale_images(images_with_helmet, (150, 200))
+        self.images_frames = images
 
     def jump(self):
         if self.is_on_the_ground():
+            self.jump_velocity = 50
             self.movey -= 100
             self.is_jumping = True
 
@@ -152,21 +192,15 @@ class Human(Player):
     def update(self, game_deltatime):
         if self.is_jumping:
             print("human is during jump")
-            slowdown = 300.0
-            player_speed = game_deltatime / slowdown
-            self.rect.y += self.movey * player_speed
-
-        if self.is_on_the_top():
-            self.movey += 100
+            self.rect.y -= self.jump_velocity
+            self.jump_velocity -= self.g
 
         if self.is_on_the_ground():
+            self.jump_velocity = 0
+            self.rect.y = self.ground_level
             self.is_jumping = False
 
-        if self.is_on_the_ground() and not self.is_jumping:
-            self.movey = 0
-            self.rect.y = self.ground_level
-
-        if self.is_jumping or self.is_during_jump():
+        if self.is_jumping:
             self.image = self.images_frames[2]
             self.frame = 0
             return

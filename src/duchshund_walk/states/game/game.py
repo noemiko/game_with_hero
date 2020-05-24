@@ -61,6 +61,7 @@ class Game(States):
     def update(self, screen, deltatime):
         self.levels.update(screen, self.counter.count)
         self.handle_collision()
+
         if len(self.bullets) <= self.MAX_BULLET:
             self.bullets.add(self.human.bullets)
             self.bullets.add(self.duchshund.bullets)
@@ -70,14 +71,22 @@ class Game(States):
         elif self.levels.is_game_finished():
             self.show_winning_message(screen)
             return
+        if self.levels.is_cosmos_level():
+            self.human.cosmos_mode()
+            self.duchshund.cosmos_mode()
+        else:
+            self.human.earth_mode()
+            self.duchshund.earth_mode()
         new_obstacle = self.levels.get_obstacles()
         if new_obstacle:
             self.obstacles.add(new_obstacle)
         self.counter.update()
         self.duchshund.update(deltatime)
         self.human.update(deltatime)
+
         self.obstacles.update()
         self.bullets.update()
+
         self.draw(screen)
 
     def draw(self, screen):

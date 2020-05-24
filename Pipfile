@@ -8,7 +8,7 @@ python_version = "3.8"
 
 [packages]
 pygame="==2.0.0.dev6"
-
+pillow = "*"
 
 [dev-packages]
 pytest = "*"

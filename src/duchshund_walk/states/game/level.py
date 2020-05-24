@@ -23,13 +23,13 @@ class Levels:
         LevelDetails(obstacles=[Flower], background_index=1, respawn_max_tempo=70),
         LevelDetails(obstacles=[Stone], background_index=2, respawn_max_tempo=70),
         LevelDetails(obstacles=[Windmill], background_index=3, respawn_max_tempo=70),
-        LevelDetails(obstacles=[Flying, Cactus], background_index=0, respawn_max_tempo=70),
-        LevelDetails(obstacles=[Flying, Flower], background_index=0, respawn_max_tempo=60),
-        LevelDetails(obstacles=[Flying, Stone], background_index=0, respawn_max_tempo=50),
-        LevelDetails(obstacles=[Flying, Windmill], background_index=0, respawn_max_tempo=20),
-        LevelDetails(obstacles=[Flying, Cactus], background_index=0, respawn_max_tempo=10),
-        LevelDetails(obstacles=[Flying, Windmill], background_index=0, respawn_max_tempo=10),
-        LevelDetails(obstacles=[Flying, Stone], background_index=0, respawn_max_tempo=10),
+        LevelDetails(obstacles=[Flying, Cactus], background_index=1, respawn_max_tempo=70),
+        LevelDetails(obstacles=[Flying, Flower], background_index=2, respawn_max_tempo=60),
+        LevelDetails(obstacles=[Flying, Stone], background_index=3, respawn_max_tempo=50),
+        LevelDetails(obstacles=[Flying, Windmill], background_index=2, respawn_max_tempo=20),
+        LevelDetails(obstacles=[Flying, Cactus], background_index=3, respawn_max_tempo=10),
+        LevelDetails(obstacles=[Flying, Windmill], background_index=1, respawn_max_tempo=10),
+        LevelDetails(obstacles=[Flying, Stone], background_index=0, respawn_max_tempo=40),
         LevelDetails(obstacles=[], background_index=4, respawn_max_tempo=10000),  # win background
     ]
 
@@ -47,7 +47,6 @@ class Levels:
             waiting = index * 45
             if game_time == waiting:
                 self.current_world = world
-                print(index)
         self.background.change_image(self.current_world.background_index)
 
     def get_obstacles(self):
@@ -59,6 +58,11 @@ class Levels:
                 rand_obstacle_index = randint(0, number_of_possible_obs - 1)
                 return self.current_world.obstacles[rand_obstacle_index]()
         return []
+
+    def is_cosmos_level(self):
+        if self.current_world.background_index == 0:
+            return True
+        return False
 
     def is_game_finished(self):
         return self.current_world == self.WORLDS[-1]
