@@ -22,3 +22,7 @@ pipenv run app
 ```
 pre-commit install
 ```
+
+Background music come from `http://dig.ccmixter.org/games`
+
+Sounds come from `https://freesound.org/`
