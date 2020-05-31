@@ -24,6 +24,7 @@ Main loop
 
 class Game(States):
     MAX_BULLET = 2
+    DESTROYED_SOUND_PATH = "./src/duchshund_walk/static/sounds/destroyed.flac"
 
     def __init__(self):
         States.__init__(self)
@@ -32,6 +33,9 @@ class Game(States):
 
     def startup(self):
         print("starting Game state stuff")
+        pg.mixer.init()
+        pg.mixer.music.load("./src/duchshund_walk/static/music/JeffSpeed68_-_Lockdown_Song.wav")
+        pg.mixer.music.play(-1)
         self.duchshund = Duchshund(0, GROUND_POSITION_Y)  # spawn player
         self.human = Human(250, 220)
         self.players_list = pg.sprite.Group()
@@ -46,11 +50,15 @@ class Game(States):
             self.duchshund.get_event(event)
             self.human.get_event(event)
             if event.key == ord("q") or event.key == pg.K_ESCAPE:
-                self.save_scores()
-                self.done = True
+                self.exit()
             if event.key == pg.K_r:
                 self.save_scores()
                 self.startup()
+
+    def exit(self):
+        self.save_scores()
+        pg.mixer.music.stop()
+        self.done = True
 
     def save_scores(self):
         user_points = self.duchshund.health + self.human.health + self.counter.count
@@ -114,17 +122,19 @@ class Game(States):
 
     def handle_collision(self):
         self.remove_dog_bullet()
-        self.remove_human_bulelt()
+        self.remove_human_bullet()
 
         for obs in self.obstacles:
             is_collision_dog = pg.sprite.collide_rect_ratio(0.7)(self.duchshund, obs)
             is_collision_human = pg.sprite.collide_rect_ratio(0.7)(self.human, obs)
             if is_collision_dog:
                 self.duchshund.health -= 1
+                self.duchshund.scream_in_pain()
                 print("Dog collision")
 
             if is_collision_human:
                 self.human.health -= 1
+                self.human.scream_in_pain()
                 print("Human collision")
 
     def remove_dog_bullet(self):
@@ -132,6 +142,7 @@ class Game(States):
         for bullet in self.duchshund.bullets:
             hit_list = pg.sprite.spritecollide(bullet, self.obstacles, True)
             if hit_list:
+                self.play_explosion_sound()
                 self.bullets.remove(bullet)
                 self.duchshund.bullets.remove(bullet)
                 self.duchshund.health += 10
@@ -140,12 +151,18 @@ class Game(States):
                 self.duchshund.bullets.remove(bullet)
                 self.bullets.remove(bullet)
 
-    def remove_human_bulelt(self):
+    def play_explosion_sound(self):
+        pg.mixer.init()
+        sound = pg.mixer.Sound(self.DESTROYED_SOUND_PATH)
+        sound.play(0)
+
+    def remove_human_bullet(self):
         for bullet in self.human.bullets:
 
             hit_list = pg.sprite.spritecollide(bullet, self.obstacles, True)
 
             if hit_list:
+                self.play_explosion_sound()
                 self.bullets.remove(bullet)
                 self.human.bullets.remove(bullet)
                 self.human.health += 1

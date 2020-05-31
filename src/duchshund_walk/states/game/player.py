@@ -1,6 +1,6 @@
 import pygame as pg
-from duchshund_walk.settings import BLUE
 from duchshund_walk.settings import GROUND_POSITION_Y
+from duchshund_walk.settings import WHITE
 from duchshund_walk.utils import get_dog_image_folder
 from duchshund_walk.utils import get_human_image_folder
 from duchshund_walk.utils import get_images
@@ -14,7 +14,7 @@ class Bullet(pg.sprite.Sprite):
     def __init__(self, x, y):
         pg.sprite.Sprite.__init__(self)
         self.image = pg.Surface((25, 2))
-        self.image.fill(BLUE)
+        self.image.fill(WHITE)
         self.rect = self.image.get_rect()
         self.rect.y = y
         self.rect.x = x
@@ -65,10 +65,22 @@ class Duchshund(Player):
         self.jump_heigh = 250
         self.ground_level = GROUND_POSITION_Y
         self.bullets = []
+        self.laser_sound_path = "./src/duchshund_walk/static/sounds/dog_laser.wav"
+        self.jump_sound_path = "./src/duchshund_walk/static/sounds/dog_jump.wav"
+        self.pain_sound_path = "./src/duchshund_walk/static/sounds/dog_pain.wav"
 
     def shoot(self):
+        pg.mixer.init()
+        sound = pg.mixer.Sound(self.laser_sound_path)
+        sound.play(0)
         bullet = Bullet(self.rect.x + 80, self.rect.y + 25)
         self.bullets.append(bullet)
+
+    def scream_in_pain(self):
+        pg.mixer.init()
+        sound = pg.mixer.Sound(self.pain_sound_path)
+        if not pg.mixer.get_busy():
+            sound.play(0)
 
     def cosmos_mode(self):
         self.g = 5
@@ -97,6 +109,9 @@ class Duchshund(Player):
 
     def jump(self):
         if self.is_on_the_ground():
+            pg.mixer.init()
+            sound = pg.mixer.Sound(self.jump_sound_path)
+            sound.play(0)
             self.movey -= 100
             self.jump_velocity = 50
             self.is_jumping = True
@@ -145,6 +160,15 @@ class Human(Player):
         self.jump_heigh = 100
         self.ground_level = y
         self.bullets = []
+        self.laser_sound_path = "./src/duchshund_walk/static/sounds/human_laser.wav"
+        self.jump_sound_path = "./src/duchshund_walk/static/sounds/human_jump_.wav"
+        self.pain_sound_path = "./src/duchshund_walk/static/sounds/pain.wav"
+
+    def scream_in_pain(self):
+        pg.mixer.init()
+        sound = pg.mixer.Sound(self.pain_sound_path)
+        if not pg.mixer.get_busy():
+            sound.play(0)
 
     def cosmos_mode(self):
         self.g = 6
@@ -168,6 +192,9 @@ class Human(Player):
 
     def jump(self):
         if self.is_on_the_ground():
+            pg.mixer.init()
+            sound = pg.mixer.Sound(self.jump_sound_path)
+            sound.play(0)
             self.jump_velocity = 50
             self.movey -= 100
             self.is_jumping = True
@@ -186,6 +213,9 @@ class Human(Player):
             self.shoot()
 
     def shoot(self):
+        pg.mixer.init()
+        sound = pg.mixer.Sound(self.laser_sound_path)
+        sound.play(0)
         bullet = Bullet(self.rect.x + 110, self.rect.y + 25)
         self.bullets.append(bullet)
 
