@@ -9,6 +9,7 @@ from duchshund_walk.settings import BLACK
 from duchshund_walk.settings import GROUND_POSITION_Y
 from duchshund_walk.settings import WORLD_WIDTH
 from duchshund_walk.states.game.counter import Counter
+from duchshund_walk.states.game.explosion import Explosion
 from duchshund_walk.states.game.level import Levels
 from duchshund_walk.states.game.player import Duchshund
 from duchshund_walk.states.game.player import Human
@@ -44,6 +45,7 @@ class Game(States):
         self.levels = Levels()
         self.obstacles = pg.sprite.Group()
         self.bullets = pg.sprite.Group()
+        self.all_sprites = pg.sprite.Group()
 
     def get_event(self, event):
         if event.type == pg.KEYDOWN:
@@ -91,6 +93,7 @@ class Game(States):
         self.counter.update()
         self.duchshund.update(deltatime)
         self.human.update(deltatime)
+        self.all_sprites.update()
 
         self.obstacles.update()
         self.bullets.update()
@@ -102,6 +105,7 @@ class Game(States):
         self.obstacles.draw(screen)
         self.draw_points(screen)
         self.bullets.draw(screen)
+        self.all_sprites.draw(screen)
 
     def show_fail_message(self, screen):
         message_display(screen, "You Lost!", "click r button to try again")
@@ -140,8 +144,11 @@ class Game(States):
     def remove_dog_bullet(self):
 
         for bullet in self.duchshund.bullets:
-            hit_list = pg.sprite.spritecollide(bullet, self.obstacles, True)
+            hit_list = pg.sprite.spritecollide(bullet, self.obstacles, True, pg.sprite.collide_circle)
             if hit_list:
+                expl = Explosion(hit_list[0].rect.center, "lg")
+                self.all_sprites.add(expl)
+
                 self.play_explosion_sound()
                 self.bullets.remove(bullet)
                 self.duchshund.bullets.remove(bullet)
