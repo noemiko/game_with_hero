@@ -165,10 +165,10 @@ class Game(States):
 
     def remove_human_bullet(self):
         for bullet in self.human.bullets:
-
             hit_list = pg.sprite.spritecollide(bullet, self.obstacles, True)
-
             if hit_list:
+                expl = Explosion(hit_list[0].rect.center, "sm")
+                self.all_sprites.add(expl)
                 self.play_explosion_sound()
                 self.bullets.remove(bullet)
                 self.human.bullets.remove(bullet)
