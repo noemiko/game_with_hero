@@ -24,7 +24,6 @@ Main loop
 
 
 class Game(States):
-    MAX_BULLET = 2
     DESTROYED_SOUND_PATH = "./src/duchshund_walk/static/sounds/destroyed.flac"
 
     def __init__(self):
@@ -44,7 +43,8 @@ class Game(States):
         self.counter = Counter()
         self.levels = Levels()
         self.obstacles = pg.sprite.Group()
-        self.bullets = pg.sprite.Group()
+        self.human_bullets = pg.sprite.Group()
+        self.dog_bullets = pg.sprite.Group()
         self.all_sprites = pg.sprite.Group()
 
     def get_event(self, event):
@@ -71,10 +71,9 @@ class Game(States):
     def update(self, screen, deltatime):
         self.levels.update(screen, self.counter.count)
         self.handle_collision()
+        self.human_bullets.add(self.human.bullets)
+        self.dog_bullets.add(self.duchshund.bullets)
 
-        if len(self.bullets) <= self.MAX_BULLET:
-            self.bullets.add(self.human.bullets)
-            self.bullets.add(self.duchshund.bullets)
         if self.duchshund.health < 0 or self.human.health < 0:
             self.show_fail_message(screen)
             return
@@ -96,7 +95,8 @@ class Game(States):
         self.all_sprites.update()
 
         self.obstacles.update()
-        self.bullets.update()
+        self.dog_bullets.update()
+        self.human_bullets.update()
 
         self.draw(screen)
 
@@ -104,7 +104,8 @@ class Game(States):
         self.players_list.draw(screen)  # refresh player position
         self.obstacles.draw(screen)
         self.draw_points(screen)
-        self.bullets.draw(screen)
+        self.dog_bullets.draw(screen)
+        self.human_bullets.draw(screen)
         self.all_sprites.draw(screen)
 
     def show_fail_message(self, screen):
@@ -142,21 +143,22 @@ class Game(States):
                 print("Human collision")
 
     def remove_dog_bullet(self):
-
         for bullet in self.duchshund.bullets:
-            hit_list = pg.sprite.spritecollide(bullet, self.obstacles, True, pg.sprite.collide_circle)
-            if hit_list:
-                expl = Explosion(hit_list[0].rect.center, "lg")
+            hit_list = pg.sprite.spritecollide(
+                sprite=bullet, group=self.obstacles, dokill=True, collided=pg.sprite.collide_circle
+            )
+            for hitted_object in hit_list:
+                expl = Explosion(hitted_object.rect.center, "lg")
                 self.all_sprites.add(expl)
 
                 self.play_explosion_sound()
-                self.bullets.remove(bullet)
+                self.dog_bullets.remove(bullet)
                 self.duchshund.bullets.remove(bullet)
                 self.duchshund.health += 10
 
             if bullet.rect.x > WORLD_WIDTH:
                 self.duchshund.bullets.remove(bullet)
-                self.bullets.remove(bullet)
+                self.dog_bullets.remove(bullet)
 
     def play_explosion_sound(self):
         pg.mixer.init()
@@ -166,14 +168,12 @@ class Game(States):
     def remove_human_bullet(self):
         for bullet in self.human.bullets:
             hit_list = pg.sprite.spritecollide(bullet, self.obstacles, True)
-            if hit_list:
-                expl = Explosion(hit_list[0].rect.center, "sm")
+            for hitted_object in hit_list:
+                expl = Explosion(hitted_object.rect.center, "sm")
                 self.all_sprites.add(expl)
                 self.play_explosion_sound()
-                self.bullets.remove(bullet)
-                self.human.bullets.remove(bullet)
+                self.human_bullets.remove(bullet)
                 self.human.health += 1
 
             if bullet.rect.x > WORLD_WIDTH:
                 self.human.bullets.remove(bullet)
-                self.bullets.remove(bullet)
