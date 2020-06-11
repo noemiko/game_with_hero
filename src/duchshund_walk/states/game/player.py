@@ -8,6 +8,7 @@ from duchshund_walk.utils import merge_images
 from duchshund_walk.utils import scale_images
 
 EARTH_GRAVITATION = 8
+MAX_BULLETS = 1
 
 
 class Bullet(pg.sprite.Sprite):
@@ -41,6 +42,7 @@ class Player(pg.sprite.Sprite):
         self.health = 100
         self.g = EARTH_GRAVITATION
         self.jump_velocity = 0
+        self.empty_gun_sound_path = "./src/duchshund_walk/static/sounds/empty_gun.wav"
 
     def load_images(self):
         pass
@@ -71,10 +73,14 @@ class Duchshund(Player):
 
     def shoot(self):
         pg.mixer.init()
-        sound = pg.mixer.Sound(self.laser_sound_path)
+        if not len(self.bullets) < MAX_BULLETS:
+            sound = pg.mixer.Sound(self.empty_gun_sound_path)
+        else:
+            sound = pg.mixer.Sound(self.laser_sound_path)
+            bullet = Bullet(self.rect.x + 80, self.rect.y + 25)
+
+            self.bullets.append(bullet)
         sound.play(0)
-        bullet = Bullet(self.rect.x + 80, self.rect.y + 25)
-        self.bullets.append(bullet)
 
     def scream_in_pain(self):
         pg.mixer.init()
@@ -214,10 +220,13 @@ class Human(Player):
 
     def shoot(self):
         pg.mixer.init()
-        sound = pg.mixer.Sound(self.laser_sound_path)
+        if not len(self.bullets) < MAX_BULLETS:
+            sound = pg.mixer.Sound(self.empty_gun_sound_path)
+        else:
+            sound = pg.mixer.Sound(self.laser_sound_path)
+            bullet = Bullet(self.rect.x + 110, self.rect.y + 25)
+            self.bullets.append(bullet)
         sound.play(0)
-        bullet = Bullet(self.rect.x + 110, self.rect.y + 25)
-        self.bullets.append(bullet)
 
     def update(self, game_deltatime):
         if self.is_jumping:
