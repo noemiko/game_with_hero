@@ -11,11 +11,12 @@ from duchshund_walk.settings import WORLD_WIDTH
 from duchshund_walk.states.game.counter import Counter
 from duchshund_walk.states.game.explosion import Explosion
 from duchshund_walk.states.game.level import Levels
-from duchshund_walk.states.game.player import Duchshund
-from duchshund_walk.states.game.player import Human
+from duchshund_walk.states.game.players.dogs import Duchshund
+from duchshund_walk.states.game.players.humans import HumanFactory
 from duchshund_walk.states.game.scores import ScoreRow
 from duchshund_walk.states.game.scores import save_new_scores
 from duchshund_walk.utils import get_game_config
+from duchshund_walk.utils import get_human_type
 
 
 """
@@ -37,7 +38,8 @@ class Game(States):
         pg.mixer.music.load("./src/duchshund_walk/static/music/JeffSpeed68_-_Lockdown_Song.wav")
         pg.mixer.music.play(-1)
         self.duchshund = Duchshund(0, GROUND_POSITION_Y)  # spawn player
-        self.human = Human(250, 220)
+        human_type = get_human_type()
+        self.human = HumanFactory(human_type, 250, 220)
         self.players_list = pg.sprite.Group()
         self.players_list.add([self.duchshund, self.human])
         self.counter = Counter()
@@ -147,8 +149,8 @@ class Game(States):
             hit_list = pg.sprite.spritecollide(
                 sprite=bullet, group=self.obstacles, dokill=True, collided=pg.sprite.collide_circle
             )
-            for hitted_object in hit_list:
-                expl = Explosion(hitted_object.rect.center, "lg")
+            for hit_object in hit_list:
+                expl = Explosion(hit_object.rect.center, "lg")
                 self.all_sprites.add(expl)
 
                 self.play_explosion_sound()
@@ -167,13 +169,15 @@ class Game(States):
 
     def remove_human_bullet(self):
         for bullet in self.human.bullets:
-            hit_list = pg.sprite.spritecollide(bullet, self.obstacles, True)
-            for hitted_object in hit_list:
-                expl = Explosion(hitted_object.rect.center, "sm")
+            hit_list = pg.sprite.spritecollide(
+                sprite=bullet, group=self.obstacles, dokill=True, collided=pg.sprite.collide_circle
+            )
+            for hit_object in hit_list:
+                expl = Explosion(hit_object.rect.center, "sm")
                 self.all_sprites.add(expl)
                 self.play_explosion_sound()
                 self.human_bullets.remove(bullet)
                 self.human.health += 1
 
             if bullet.rect.x > WORLD_WIDTH:
-                self.human.bullets.remove(bullet)
+                self.human_bullets.remove(bullet)

@@ -36,7 +36,7 @@ def get_all_hero_clothes(hero) -> Dict:
     :param hero: class
     :return: name of images with list of surface to make animation {name:str:List[Surface]}
     """
-    from duchshund_walk.states.game.player import Duchshund
+    from duchshund_walk.states.game.players.player import Duchshund
 
     if hero == Duchshund:
         folder_name = HeroType.duchshund.value
@@ -142,7 +142,15 @@ def get_human_image_folder():
         config = open_json_file("config.json")
     except FileNotFoundError as e:
         raise FileNotFoundError(f"Missing config file: {e}")
-    return config["human"]
+    return config["human"]["folder"]
+
+
+def get_human_type():
+    try:
+        config = open_json_file("config.json")
+    except FileNotFoundError as e:
+        raise FileNotFoundError(f"Missing config file: {e}")
+    return config["human"]["type"]
 
 
 def get_dog_image_folder():
@@ -155,7 +163,7 @@ def get_dog_image_folder():
 
 def set_new_human_image_folder(folder_name):
     print(f"Overriding human image folder {folder_name}")
-    return override_game_config({"human": f"human/{folder_name}"})
+    return override_game_config({"human": {"type": folder_name, "folder": f"human/{folder_name}"}})
 
 
 def override_game_config(new_config):

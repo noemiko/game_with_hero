@@ -1,4 +1,7 @@
 {
-  "duchshund": "duchshund/with_red_bow",
-  "human": "human/mark"
+  "duchshund": "duchshund/default",
+  "human": {
+    "folder": "human/girl",
+    "type": "girl"
+  }
 }
