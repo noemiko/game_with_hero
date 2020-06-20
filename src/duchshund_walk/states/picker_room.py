@@ -2,8 +2,8 @@ import pygame as pg
 from duchshund_walk.app_core import States
 from duchshund_walk.settings import WHITE
 from duchshund_walk.settings import WORLD_WIDTH
-from duchshund_walk.states.game.player import Duchshund
-from duchshund_walk.states.game.player import Human
+from duchshund_walk.states.game.players.dogs import Duchshund
+from duchshund_walk.states.game.players.humans import Human
 from duchshund_walk.states.stage import DuchshundStage
 from duchshund_walk.states.stage import HumanStage
 from duchshund_walk.utils import Point

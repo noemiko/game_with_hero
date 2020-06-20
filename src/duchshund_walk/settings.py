@@ -19,3 +19,7 @@ DEFAULT_GAME_CONFIG = {"duchshund": "duchshund/with_red_bow", "human": "human/de
 
 PROJECT_PATH = "./src/duchshund_walk/"
 GAME_IMAGES_PATH = os.path.join(PROJECT_PATH, "states/game/images")
+
+COSMOS_GRAVITATION = 5
+EARTH_GRAVITATION = 8
+MAX_BULLETS = 1
