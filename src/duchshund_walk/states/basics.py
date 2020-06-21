@@ -63,6 +63,28 @@ class NameInput(States):
         return "NameInput"
 
 
+class AboutAuthor(States):
+    def __init__(self):
+        States.__init__(self)
+        self.next = "details"
+
+    def startup(self):
+        print("state with author")
+
+    def get_event(self, event):
+        if event.type == pg.KEYDOWN:
+            self.done = True
+        elif event.type == pg.MOUSEBUTTONDOWN:
+            self.done = True
+
+    def update(self, screen):
+        self.draw(screen)
+        message_display(screen, "@noemiko", "https://github.com/noemiko ")
+
+    def draw(self, screen):
+        screen.fill(WHITE)
+
+
 class WorkInProgress(States):
     def __init__(self):
         States.__init__(self)

@@ -12,3 +12,4 @@ __pycache__/
 .pytest_cache/
 # files created during game
 src/duchshund_walk/scores.csv
+src/duchshund_walk/config.json
