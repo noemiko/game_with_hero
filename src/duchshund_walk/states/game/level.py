@@ -44,7 +44,7 @@ class Levels:
         self.background.update()
 
         for index, world in enumerate(self.WORLDS):
-            waiting = index * 10
+            waiting = index * 50
             if game_time == waiting:
                 self.current_world = world
         self.background.change_image(self.current_world.background_index)
