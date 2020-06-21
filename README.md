@@ -1,13 +1,11 @@
 ## What is this?
 This is simple project to learn how to use own drawing in PyGame.
 Hero was drawn in Krita by graphic tablet.
-Below is gif represent this project.
+Below is gif with small demos of this project.
 
-![](screencast/dachshund_running.gif)
+![](screencast/game_preview.gif)
 
-![](screencast/walking.gif)
-
-![](screencast/dog_with_enemy.gif)
+![](screencast/menu_preview.gif)
 
 ## How to run
 

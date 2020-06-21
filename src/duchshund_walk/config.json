@@ -1,7 +1,7 @@
 {
   "duchshund": "duchshund/default",
   "human": {
-    "folder": "human/girl",
-    "type": "girl"
+    "type": "girl",
+    "folder": "human/girl"
   }
 }

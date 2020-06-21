@@ -176,8 +176,10 @@ class Game(States):
                 expl = Explosion(hit_object.rect.center, "sm")
                 self.all_sprites.add(expl)
                 self.play_explosion_sound()
+                self.human.bullets.remove(bullet)
                 self.human_bullets.remove(bullet)
                 self.human.health += 1
 
             if bullet.rect.x > WORLD_WIDTH:
+                self.human.bullets.remove(bullet)
                 self.human_bullets.remove(bullet)
