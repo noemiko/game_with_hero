@@ -7,6 +7,7 @@ from duchshund_walk.settings import GREEN
 from duchshund_walk.settings import PROJECT_PATH
 from duchshund_walk.settings import WHITE
 from duchshund_walk.settings import WORLD_HEIGH
+from duchshund_walk.states.game.players.base import Player
 from duchshund_walk.utils import Point
 from duchshund_walk.utils import get_all_hero_clothes
 from duchshund_walk.utils import scale_images
@@ -17,9 +18,7 @@ from duchshund_walk.utils import set_new_human_image_folder
 class Stage:
     """Class to draw stage with hero."""
 
-    HERO_PLACEMENT = Point(120, 50)
-
-    def __init__(self, hero_class, top_left: Point, scale: tuple):
+    def __init__(self, hero_instance: Player, top_left: Point, scale: tuple):
         """
         Draw hero and change his clothes to use selected in game.
 
@@ -37,7 +36,7 @@ class Stage:
 
         self.clothes_images = None
         self.images_names = []
-        self.hero = hero_class(top_left.x + self.HERO_PLACEMENT.x, self.HERO_PLACEMENT.y)
+        self.hero = hero_instance
         self.startup(scale)
 
     def startup(self, scale):
@@ -49,7 +48,7 @@ class Stage:
             scaled_images = scale_images(images_list, scale)
             scaled_clothes[clothes_name] = scaled_images
         self.images_names = list(scaled_clothes.keys())
-        self.hero.images_frames = scaled_clothes[self.images_names[0]]
+        self.hero.current_frames = scaled_clothes[self.images_names[0]]
         self.clothes_images = scaled_clothes
 
     def draw(self, screen):
@@ -116,7 +115,7 @@ class Stage:
                 last = self.images_names.pop(-1)
                 self.images_names.insert(0, last)
                 current_frames = self.clothes_images[self.images_names[0]]
-                self.hero.images_frames = current_frames
+                self.hero.current_frames = current_frames
 
             elif self.previous_hero.collidepoint(pos):
                 print("previous clothes")
@@ -124,7 +123,7 @@ class Stage:
                 first = self.images_names.pop(0)
                 self.images_names.append(first)
                 current_frames = self.clothes_images[self.images_names[0]]
-                self.hero.images_frames = current_frames
+                self.hero.current_frames = current_frames
 
             elif self.select_button.collidepoint(pos):
                 is_saved = self.set_new_clothes(self.images_names[0])
@@ -136,7 +135,7 @@ class Stage:
         pass
 
     def draw_hero(self, screen):
-        self.hero.update(50)
+        self.hero.update()
         sprite = pg.sprite.RenderPlain(self.hero)
         sprite.draw(screen)
 

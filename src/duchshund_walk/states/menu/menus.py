@@ -47,7 +47,7 @@ class MainMenu(States, MenuCore):
             self.quit = True
         self.get_event_menu(event)
 
-    def update(self, screen, deltatime):
+    def update(self, screen):
         self.update_menu()
         self.draw(screen)
 
@@ -74,7 +74,7 @@ class Options(States, MenuCore):
             self.quit = True
         self.get_event_menu(event)
 
-    def update(self, screen, deltatime):
+    def update(self, screen):
         self.update_menu()
         self.draw(screen)
 
@@ -103,7 +103,7 @@ class Scores(States):
         rect.topleft = (coordinates.x, coordinates.y)
         screen.blit(surface, rect)
 
-    def update(self, screen, deltatime):
+    def update(self, screen):
         self.draw(screen)
         left_margin = 10
         x_first_column = 10

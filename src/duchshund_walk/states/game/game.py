@@ -70,7 +70,7 @@ class Game(States):
         score_row = ScoreRow(nickname=globals.nickname, points=user_points, date=date)
         save_new_scores(score_row)
 
-    def update(self, screen, deltatime):
+    def update(self, screen):
         self.levels.update(screen, self.counter.count)
         self.handle_collision()
         self.human_bullets.add(self.human.bullets)
@@ -92,8 +92,8 @@ class Game(States):
         if new_obstacle:
             self.obstacles.add(new_obstacle)
         self.counter.update()
-        self.duchshund.update(deltatime)
-        self.human.update(deltatime)
+        self.duchshund.update()
+        self.human.update()
         self.all_sprites.update()
 
         self.obstacles.update()

@@ -36,7 +36,7 @@ def get_all_hero_clothes(hero) -> Dict:
     :param hero: class
     :return: name of images with list of surface to make animation {name:str:List[Surface]}
     """
-    from duchshund_walk.states.game.players.player import Duchshund
+    from duchshund_walk.states.game.players.dogs import Duchshund
 
     if hero == Duchshund:
         folder_name = HeroType.duchshund.value
@@ -95,6 +95,7 @@ def merge_images(current_image: image, second_img_path: str):
     strFormat = "RGBA"
     raw_str = image.tostring(current_image, strFormat, False)
     im1 = Image.frombytes(strFormat, current_image.get_size(), raw_str)
+    print(second_img_path)
     im2 = Image.open(second_img_path)
     new_image = Image.alpha_composite(im1, im2)
     return image.fromstring(new_image.tobytes(), new_image.size, new_image.mode)
@@ -140,6 +141,7 @@ def set_new_dog_image_folder(folder_name):
 def get_human_image_folder():
     try:
         config = open_json_file("config.json")
+        print(config)
     except FileNotFoundError as e:
         raise FileNotFoundError(f"Missing config file: {e}")
     return config["human"]["folder"]
