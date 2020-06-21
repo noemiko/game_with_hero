@@ -83,8 +83,8 @@ class Human(Player):
         if event.key == ord("w"):
             print("button `w` pressed")
             self.jump()
-        if event.key == ord("e"):
-            print("button `e` pressed")
+        if event.key == pg.K_RETURN:
+            print("button `enter` pressed")
             self.shoot()
 
     def shoot(self):
