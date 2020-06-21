@@ -11,7 +11,6 @@ class States(ABC):
     def __init__(self):
         self.screen = pg.display.set_mode((WORLD_WIDTH, WORLD_HEIGH))
         self.screen_rect = self.screen.get_rect()
-
         self.done: bool = False
         self.next: str = ""
         self.quit: bool = False
@@ -22,7 +21,7 @@ class States(ABC):
         pass
 
     @abstractmethod
-    def update(self, screen, deltatime):
+    def update(self, screen):
         pass
 
     @abstractmethod
@@ -62,12 +61,12 @@ class AppStateMachine:
         self.state.startup()
         self.state.previous = previous
 
-    def update(self, deltatime):
+    def update(self):
         if self.state.quit:
             self.done = True
         elif self.state.done:
             self.flip_state()
-        self.state.update(self.screen, deltatime)
+        self.state.update(self.screen)
 
     def event_loop(self):
         for event in pg.event.get():
@@ -77,8 +76,8 @@ class AppStateMachine:
 
     def main_game_loop(self):
         while not self.done:
-            delta_time = self.clock.tick(self.fps)
+            self.clock.tick(self.fps)
             self.event_loop()
-            self.update(delta_time)
+            self.update()
             pg.display.update()
             pg.display.flip()

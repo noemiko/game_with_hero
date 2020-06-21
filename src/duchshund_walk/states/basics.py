@@ -43,7 +43,7 @@ class NameInput(States):
                 if len(self.text) != NICKNAME_MAX_LENGTH:
                     self.text += event.unicode
 
-    def update(self, screen, deltatime):
+    def update(self, screen):
         self.draw(screen)
         char_size = 10
         box_width = max(50, self.txt_surface.get_width() + char_size)
@@ -77,7 +77,7 @@ class WorkInProgress(States):
         elif event.type == pg.MOUSEBUTTONDOWN:
             self.done = True
 
-    def update(self, screen, deltatime):
+    def update(self, screen):
         self.draw(screen)
         message_display(screen, "TODO", "todo " + globals.nickname)
 
